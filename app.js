@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14";
+  var APP_VERSION = "0.14.1";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,12 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.1", notes: [
+        "İçerik Güncellemeleri modülü artık gerçekten çalışıyor: Ayarlar → İçerik Güncellemeleri'ndeki manifest adresi, önceden bir yer tutucuydu (hiçbir yere bağlı değildi) — artık gerçek, herkese açık bir GitHub deposuna (github.com/FevziEL/buildo-content-updates) bağlı. Bundan sonra app.js/dict_en_tr.js/vb. gibi sadece web katmanını ilgilendiren küçük güncellemeler, yeni bir APK kurmadan, bu ekrandaki \"Güncellemeleri Kontrol Et\" düğmesiyle uygulanabilir.",
+        "Not: Bu mekanizma sadece web katmanını (app.js, dict_en_tr.js, index.html, CSS, i18n dosyaları) güncelleyebilir — uygulama simgesi, splash ekranı, izinler gibi native/Android tarafı değişiklikler için hâlâ yeni bir APK kurulumu gerekiyor."
+      ]
+    },
     {
       version: "0.14", notes: [
         "Makale uzunluğu eşiği tekrar yükseltildi: 300 kelimeden 700 kelimeye (bkz. MIN_BODY_WORDS), 900+ kelimelik makaleler artık \"derinlemesine\" olarak işaretleniyor, ve her makale en az 5 gerçek paragraf içermek zorunda. Kısa/teaser içerikler artık tekrarlanan paragraf ve çerez/gizlilik/abone-ol gibi kalıp metinler ayıklandıktan SONRA ölçülüyor — bir kaynak, kalıp metinle kelime sayısını şişiremiyor.",

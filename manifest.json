@@ -1,12 +1,12 @@
 {
   "contentVersion": 1,
   "minAppVersionCode": 15,
-  "notes": "Initial content-update feed setup - matches the files bundled in Buildo APK versionCode 15 exactly.",
+  "notes": "Initial content-update feed setup - matches the files bundled in Buildo APK versionCode 15 (v0.14.1) exactly.",
   "files": [
     {
       "path": "app.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/app.js",
-      "sha256": "be3a76fc7b441266e3f838eeca5dff7ce9b6bb9aa582ff3ea31c56023e917b8b"
+      "sha256": "f408dcc19bbdc0b2bb14f2370a1fd9b0432fca0479da5c0f584579fcf243d6f0"
     },
     {
       "path": "dict_en_tr.js",

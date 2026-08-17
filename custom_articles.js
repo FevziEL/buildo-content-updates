@@ -96,6 +96,26 @@
         "The plastic particle may be small.",
         "The biological response can be systemic."
       ]
+    },
+    {
+      id: "custom_microplastics_and_plants_part4",
+      topic: "cevre",
+      source: "Bizden Gelenler",
+      title: "Microplastics and Plants: The Rhizosphere Connection",
+      link: "",
+      pubDate: "2026-08-17T18:00:00Z",
+      image: "",
+      bodyParagraphs: [
+        "Part 4 — The Hidden Ecosystem Around the Root",
+        "Perhaps the most underestimated component of plant–microplastic research is the rhizosphere.",
+        "A root is surrounded by a microbial ecosystem that regulates nutrient cycling, hormone production, organic matter transformation, and plant stress responses. Microplastics can modify this environment by changing soil structure, organic matter interactions, nutrient availability, and microbial community composition.",
+        "Recent studies suggest that these changes can extend surprisingly far. Exposure to airborne microplastics, for example, has been associated with changes in leaf physiology, root metabolism, and root exudation, followed by alterations in rhizosphere bacterial communities.",
+        "This creates a fascinating biological chain.",
+        "A particle may interact with a leaf, alter plant metabolism, modify carbon allocation to the root, change the chemistry of root exudates, and ultimately reshape the microbial community belowground.",
+        "In this context, microplastic toxicity cannot be understood simply as a direct interaction between a particle and a plant cell.",
+        "It is increasingly becoming a question of plant–soil–microbe interactions.",
+        "That shift could fundamentally change how environmental phytotoxicity is studied."
+      ]
     }
   ];
 

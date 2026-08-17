@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.7";
+  var APP_VERSION = "0.14.8";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.8", notes: [
+        "\"Bizden Gelenler\"e dördüncü yazı eklendi: \"Microplastics and Plants: The Rhizosphere Connection\" (Part 4). Bu sürüm de YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.6'daki düzeltmeden sonraki ikinci gerçek uçtan uca doğrulama."
+      ]
+    },
     {
       version: "0.14.7", notes: [
         "\"Bizden Gelenler\"e üçüncü yazı eklendi: \"Microplastics and Plants: What Happens Inside?\" (Part 3). Bu sürüm de v0.14.5'te olduğu gibi YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — bu sefer v0.14.6'daki gerçek düzeltmeden sonra, mekanizmanın gerçekten uçtan uca çalıştığının doğrulanması."

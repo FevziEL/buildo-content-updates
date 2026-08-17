@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.5";
+  var APP_VERSION = "0.14.6";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.6", notes: [
+        "İçerik Güncellemeleri mekanizmasında, v0.10'dan beri var olan gerçek ve önemli bir hata bulundu ve düzeltildi: uygulama bir güncellemeyi indirip doğruladıktan ve \"başarılı\" dedikten SONRA bile, WebView aslında hiçbir zaman güncellenmiş dosyayı göstermiyordu — her zaman APK içindeki orijinal, paket dosyasını yüklemeye devam ediyordu (native/Kotlin tarafındaki bir adres ayrıştırma hatası yüzünden). Bu, özelliğin ilk gerçek uçtan uca kullanımıydı ve tam da bu yüzden şimdiye kadar fark edilmemişti. Artık gerçekten düzeldi ve doğrulandı."
+      ]
+    },
     {
       version: "0.14.5", notes: [
         "\"Bizden Gelenler\"e ikinci yazı eklendi: \"Microplastics and Plants: How Do Particles Enter?\" (Part 2). Bu sürüm YENİ BİR APK OLMADAN, doğrudan Ayarlar → İçerik Güncellemeleri üzerinden geldi — custom_articles.js dosyasının da bu mekanizmayla güncellenebildiğinin canlı kanıtı."

@@ -1,12 +1,12 @@
 {
-  "contentVersion": 2,
-  "minAppVersionCode": 15,
-  "notes": "v0.14.2 test update: +8 dictionary entries, version badge bump. Confirms Settings -> Content Updates works end-to-end without a new APK.",
+  "contentVersion": 3,
+  "minAppVersionCode": 16,
+  "notes": "v0.14.3: matches the versionCode 16 APK exactly (fixes the i18n/ subdirectory ENOENT bug found in the v2 test - that fix is native/Kotlin-only, so this manifest just keeps content in sync with the new APK's bundled assets).",
   "files": [
     {
       "path": "app.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/app.js",
-      "sha256": "000b9b9f8d6f303dfd846377a484d995d518700ea8ce780d8dc409287b6d6b75"
+      "sha256": "99d7f8270bf3083d604d3b1d12f6202d8aa615e6ef77d4e362b6ce5750090554"
     },
     {
       "path": "dict_en_tr.js",

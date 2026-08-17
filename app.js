@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.2";
+  var APP_VERSION = "0.14.3";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.3", notes: [
+        "İçerik Güncellemeleri mekanizmasında gerçek bir hata bulundu ve düzeltildi: alt klasördeki dosyalar (i18n/en.js, i18n/tr.js, i18n/core.js) indirilirken \"klasör bulunamadı\" (ENOENT) hatası veriyordu — geçici klasör, alt dizinleri otomatik oluşturmuyordu. Bu, mekanizmanın ilk gerçek canlı denemesinde ortaya çıktı; native/Kotlin tarafı bir düzeltme olduğu için bu sürüm için yeni bir APK kurulumu gerekti (İçerik Güncellemeleri ile gönderilemezdi)."
+      ]
+    },
     {
       version: "0.14.2", notes: [
         "Bu sürüm hiçbir yeni APK kurulumu OLMADAN, doğrudan Ayarlar → İçerik Güncellemeleri üzerinden geldi — sistemin gerçekten uçtan uca çalıştığının canlı doğrulaması. Sözlüğe küçük bir test partisi eklendi (dwarf planet, asteroid belt, remnant, hotspot, contagious, quarantine, antiviral, biosphere — 8 kelime)."

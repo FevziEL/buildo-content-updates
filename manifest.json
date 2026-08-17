@@ -1,66 +1,66 @@
 {
   "contentVersion": 5,
   "minAppVersionCode": 17,
-  "notes": "v0.14.5: Bizden Gelenler Part 2 added (custom_articles.js) - content-update-only push, no new APK, confirms the mechanism works for this file too.",
+  "notes": "v0.14.5: Bizden Gelenler Part 2. File URLs switched to jsDelivr (purge-able CDN) to fix raw.githubusercontent.com's unpredictable per-file cache lag seen on the last two attempts.",
   "files": [
     {
       "path": "app.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/app.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/app.js",
       "sha256": "7cd0005a5bf34fc948d5d00cb4675f94ecd1da809e89f13bc384e251cfa53986"
     },
     {
       "path": "dict_en_tr.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/dict_en_tr.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/dict_en_tr.js",
       "sha256": "9b0f1a4b3cb37bf5b49ef334d4c95e769475e234d47675eb33a4ae45457083b7"
     },
     {
       "path": "phonetic.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/phonetic.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/phonetic.js",
       "sha256": "756c5f790cb4e25ae1b647726bd0148f66da0aadbe4fc776a864a8f2a6c46abe"
     },
     {
       "path": "sentences.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/sentences.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/sentences.js",
       "sha256": "2687d520319cdb32b759ab2a6ce18219dd5b754adcad0dc1bf26bc2f8c5890c6"
     },
     {
       "path": "word_bubble.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/word_bubble.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/word_bubble.js",
       "sha256": "3b67fe72eade294e373c41541bfc90cefeb81408ba2a348cb1b81bfb9cf17766"
     },
     {
       "path": "index.html",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/index.html",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/index.html",
       "sha256": "143203076def45b5572fa05b04fce8ec0dca0804e2e93446f5aa183dd6d4991b"
     },
     {
       "path": "modernist.css",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/modernist.css",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/modernist.css",
       "sha256": "b6b60ed44a32d100fe8e841d66001df4ebb7fe27c922697d08ee127c2e5d68d3"
     },
     {
       "path": "external_sources.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/external_sources.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/external_sources.js",
       "sha256": "f79db9a3265f8dcd817f471c5d24dd113579ed64e3ac18aa06b3284c2aaf66b6"
     },
     {
       "path": "custom_articles.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/custom_articles.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/custom_articles.js",
       "sha256": "fd749240c04e8d6784d8901d74d2fe48884afe34a6a633b8415031a160f9cf23"
     },
     {
       "path": "i18n/en.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/i18n/en.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/i18n/en.js",
       "sha256": "016a71331d5015640596d652475b270441f7244c8486aa61d37a2369cae399cd"
     },
     {
       "path": "i18n/tr.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/i18n/tr.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/i18n/tr.js",
       "sha256": "01958923612d15f9b294d6da7aa0babee52fcbeddc5b3ff349a79435d5825b02"
     },
     {
       "path": "i18n/core.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/i18n/core.js",
+      "url": "https://cdn.jsdelivr.net/gh/FevziEL/buildo-content-updates@main/i18n/core.js",
       "sha256": "96995b413783066855b2231298189abbed499dc0d54d65001bdacf3b5e92f042"
     }
   ]

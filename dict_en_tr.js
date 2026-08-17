@@ -9,9 +9,9 @@
  * This is NOT a full machine-translation system — it can't translate a
  * whole sentence with correct grammar the way a real translator can. It's
  * a curated word list (2,108 entries as of v0.09, +147 in v0.13, +61 in
- * v0.14 — 2,316 total, all checked against the full existing list first so
- * nothing silently overwrites an existing sense; see the file's own
- * gotchas below —
+ * v0.14, +8 in v0.14.2 — 2,324 total, all checked against the full existing
+ * list first so nothing silently overwrites an existing sense; see the
+ * file's own gotchas below —
  * the most common English words plus the science/health/space/environment
  * vocabulary this app's news articles actually use) plus a light
  * lemmatizer, so "running", "ran" and "runs" all resolve to the same "run"
@@ -852,6 +852,16 @@
     "environmental justice":"çevresel adalet","heat wave":"sıcak hava dalgası",
     "wildfire smoke":"orman yangını dumanı","air quality":"hava kalitesi",
     "particulate":"partikül madde","asthma":"astım","allergen":"alerjen"
+  });
+
+  // v0.14.2 — small test batch pushed live through the new Content Update
+  // mechanism (2026-08-17), to confirm end-to-end that Settings → İçerik
+  // Güncellemeleri actually works without a new APK install. Same
+  // collision-checked method as every prior batch.
+  add({
+    "dwarf planet":"cüce gezegen","asteroid belt":"asteroit kuşağı","remnant":"kalıntı",
+    "hotspot":"sıcak nokta","contagious":"bulaşıcı","quarantine":"karantina",
+    "antiviral":"antiviral","biosphere":"biyosfer"
   });
 
   // Multi-word phrase keys above (e.g. "climate change") are matched first,

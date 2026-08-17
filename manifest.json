@@ -1,17 +1,17 @@
 {
-  "contentVersion": 1,
+  "contentVersion": 2,
   "minAppVersionCode": 15,
-  "notes": "Initial content-update feed setup - matches the files bundled in Buildo APK versionCode 15 (v0.14.1) exactly.",
+  "notes": "v0.14.2 test update: +8 dictionary entries, version badge bump. Confirms Settings -> Content Updates works end-to-end without a new APK.",
   "files": [
     {
       "path": "app.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/app.js",
-      "sha256": "f408dcc19bbdc0b2bb14f2370a1fd9b0432fca0479da5c0f584579fcf243d6f0"
+      "sha256": "000b9b9f8d6f303dfd846377a484d995d518700ea8ce780d8dc409287b6d6b75"
     },
     {
       "path": "dict_en_tr.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/dict_en_tr.js",
-      "sha256": "56e8dd0666643571145c975fd07a93cd903f953d5cf8808a9be7882c2250c3b9"
+      "sha256": "9b0f1a4b3cb37bf5b49ef334d4c95e769475e234d47675eb33a4ae45457083b7"
     },
     {
       "path": "phonetic.js",

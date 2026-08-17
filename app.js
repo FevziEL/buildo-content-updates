@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.1";
+  var APP_VERSION = "0.14.2";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.2", notes: [
+        "Bu sürüm hiçbir yeni APK kurulumu OLMADAN, doğrudan Ayarlar → İçerik Güncellemeleri üzerinden geldi — sistemin gerçekten uçtan uca çalıştığının canlı doğrulaması. Sözlüğe küçük bir test partisi eklendi (dwarf planet, asteroid belt, remnant, hotspot, contagious, quarantine, antiviral, biosphere — 8 kelime)."
+      ]
+    },
     {
       version: "0.14.1", notes: [
         "İçerik Güncellemeleri modülü artık gerçekten çalışıyor: Ayarlar → İçerik Güncellemeleri'ndeki manifest adresi, önceden bir yer tutucuydu (hiçbir yere bağlı değildi) — artık gerçek, herkese açık bir GitHub deposuna (github.com/FevziEL/buildo-content-updates) bağlı. Bundan sonra app.js/dict_en_tr.js/vb. gibi sadece web katmanını ilgilendiren küçük güncellemeler, yeni bir APK kurmadan, bu ekrandaki \"Güncellemeleri Kontrol Et\" düğmesiyle uygulanabilir.",

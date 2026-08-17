@@ -1,12 +1,12 @@
 {
-  "contentVersion": 3,
-  "minAppVersionCode": 16,
-  "notes": "v0.14.3: matches the versionCode 16 APK exactly (fixes the i18n/ subdirectory ENOENT bug found in the v2 test - that fix is native/Kotlin-only, so this manifest just keeps content in sync with the new APK's bundled assets).",
+  "contentVersion": 4,
+  "minAppVersionCode": 17,
+  "notes": "v0.14.4: matches versionCode 17 APK. Adds custom_articles.js (Bizden Gelenler / From Us) to the updatable set - future new pieces can ship via this mechanism without a new APK.",
   "files": [
     {
       "path": "app.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/app.js",
-      "sha256": "99d7f8270bf3083d604d3b1d12f6202d8aa615e6ef77d4e362b6ce5750090554"
+      "sha256": "13522e9aedd5b47bae71f9b4bd03beab1b92766837fd830b3b51911a8da1f111"
     },
     {
       "path": "dict_en_tr.js",
@@ -31,7 +31,7 @@
     {
       "path": "index.html",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/index.html",
-      "sha256": "e524fcfd3be88926bcecc2a0ec2075b4e035b10bec8ce1ef503e310a9ad231b2"
+      "sha256": "143203076def45b5572fa05b04fce8ec0dca0804e2e93446f5aa183dd6d4991b"
     },
     {
       "path": "modernist.css",
@@ -44,14 +44,19 @@
       "sha256": "f79db9a3265f8dcd817f471c5d24dd113579ed64e3ac18aa06b3284c2aaf66b6"
     },
     {
+      "path": "custom_articles.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/custom_articles.js",
+      "sha256": "d7b65890872645c490f8f0aab48c7de76ebeedea898b49f00fc94fdb44181275"
+    },
+    {
       "path": "i18n/en.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/i18n/en.js",
-      "sha256": "011bd3edf3eb7bbef36a4c76349df9c822d7e8b7ecacfa8ac0d5131ef6866532"
+      "sha256": "016a71331d5015640596d652475b270441f7244c8486aa61d37a2369cae399cd"
     },
     {
       "path": "i18n/tr.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/i18n/tr.js",
-      "sha256": "106ff6c27abb6934c72a9dd99ba3b737d9c2656a9d16a00891abc217a0643109"
+      "sha256": "01958923612d15f9b294d6da7aa0babee52fcbeddc5b3ff349a79435d5825b02"
     },
     {
       "path": "i18n/core.js",

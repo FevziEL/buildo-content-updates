@@ -45,6 +45,10 @@
     "home.secondary.vocab": "My Vocabulary",
     "home.secondary.progress": "Progress",
     "home.secondary.external": "External Reading",
+    "home.secondary.custom": "From Us",
+    "custom.title": "From Us",
+    "custom.subtitle": "Original pieces written for Buildo readers.",
+    "custom.empty": "No pieces here yet.",
     "home.externalReading.title": "External Reading",
     "home.externalReading.sub": "Science-first articles from NASA, PLOS and more",
 

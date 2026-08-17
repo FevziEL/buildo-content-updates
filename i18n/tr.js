@@ -45,6 +45,10 @@
     "home.secondary.vocab": "Kelime Hazinem",
     "home.secondary.progress": "İlerleme",
     "home.secondary.external": "Dış Kaynak Okuma",
+    "home.secondary.custom": "Bizden Gelenler",
+    "custom.title": "Bizden Gelenler",
+    "custom.subtitle": "Buildo okuyucuları için yazılmış özgün yazılar.",
+    "custom.empty": "Henüz burada bir yazı yok.",
     "home.externalReading.title": "Dış Kaynak Okuma",
     "home.externalReading.sub": "NASA, PLOS ve daha fazlasından bilim öncelikli makaleler",
 

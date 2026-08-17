@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.3";
+  var APP_VERSION = "0.14.4";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.4", notes: [
+        "Yeni: Ana Sayfa'da \"Bilim Haberleri\"nin yanına \"Bizden Gelenler\" eklendi — Buildo için özel olarak yazılmış, dışarıdan çekilmeyen, doğrudan uygulamaya gömülü yazılar. Açıldığında tıpkı normal bir bilim makalesi gibi aynı okuma/build-up/kelime/shadowing/comprehension akışından geçiyor. İlk yazı: \"Microplastics and Plants: A New Biological Conversation\" (Part 1)."
+      ]
+    },
     {
       version: "0.14.3", notes: [
         "İçerik Güncellemeleri mekanizmasında gerçek bir hata bulundu ve düzeltildi: alt klasördeki dosyalar (i18n/en.js, i18n/tr.js, i18n/core.js) indirilirken \"klasör bulunamadı\" (ENOENT) hatası veriyordu — geçici klasör, alt dizinleri otomatik oluşturmuyordu. Bu, mekanizmanın ilk gerçek canlı denemesinde ortaya çıktı; native/Kotlin tarafı bir düzeltme olduğu için bu sürüm için yeni bir APK kurulumu gerekti (İçerik Güncellemeleri ile gönderilemezdi)."
@@ -895,6 +900,36 @@
   // Local-first adaptive reading fallback. These are original pedagogical
   // adaptations built from permitted feed text, while source attribution and
   // the original link remain visible to the learner.
+  // ---- "Bizden Gelenler" / "From Us" (2026-08-17) ----
+  // Original, locally-bundled pieces (assets/custom_articles.js) — never
+  // fetched, so none of the RSS-pipeline quality gates (MIN_BODY_WORDS,
+  // MIN_PARAGRAPHS, cleanArticleParagraphs' boilerplate stripping) apply;
+  // those exist to distrust *scraped* content, not hand-written pieces.
+  // Turns the raw {id,topic,source,title,link,pubDate,image,bodyParagraphs}
+  // entries into the exact same shape a fetched article has (readTime/
+  // wordCount/factSheet computed the same way real articles get them), so
+  // openArticleObject and the whole reading/build-up/vocabulary/shadowing/
+  // comprehension flow work on a custom piece with no separate code path.
+  function materializeCustomArticles() {
+    var raw = (window.CustomArticles && window.CustomArticles.ARTICLES) || [];
+    return raw.map(function (a) {
+      var paragraphs = a.bodyParagraphs || [];
+      var bodyText = paragraphs.join(" ");
+      return Object.assign({}, a, {
+        readTime: estimateReadTime(bodyText),
+        wordCount: bodyText.split(/\s+/).filter(Boolean).length,
+        paragraphCount: paragraphs.length,
+        preferred: false,
+        isCustom: true,
+        factSheet: buildFactSheet(a.title || "", paragraphs)
+      });
+    });
+  }
+
+  var CUSTOM_ARTICLES = materializeCustomArticles();
+  var CUSTOM_ARTICLES_BY_ID = {};
+  CUSTOM_ARTICLES.forEach(function (a) { CUSTOM_ARTICLES_BY_ID[a.id] = a; });
+
   function buildFactSheet(title, paragraphs) {
     var text = (title + " " + paragraphs.join(" ")).trim();
     return {
@@ -1252,6 +1287,35 @@
   });
   document.getElementById("btn-er-back").addEventListener("click", function () {
     document.getElementById("screen-external-reading").classList.remove("active");
+    document.getElementById("screen-home").classList.add("active");
+  });
+
+  // ---- "Bizden Gelenler" / "From Us" screen ----
+  // Reuses articleRowHtml/bindArticleRow — the exact same row markup and
+  // click/save behavior as Browse Science's list — so a custom piece looks
+  // and behaves identically once you're looking at it, per the same
+  // "reuse the existing flow" rule as openArticleObject itself.
+  function renderCustomArticleList() {
+    var listEl = document.getElementById("custom-article-list");
+    var emptyEl = document.getElementById("custom-empty");
+    listEl.innerHTML = "";
+    if (!CUSTOM_ARTICLES.length) { emptyEl.hidden = false; return; }
+    emptyEl.hidden = true;
+    CUSTOM_ARTICLES.forEach(function (a) {
+      var row = document.createElement("div");
+      row.className = "article-row";
+      row.innerHTML = articleRowHtml(a);
+      bindArticleRow(row, a);
+      listEl.appendChild(row);
+    });
+  }
+  document.getElementById("btn-home-custom").addEventListener("click", function () {
+    document.querySelectorAll(".screen").forEach(function (s) { s.classList.remove("active"); });
+    document.getElementById("screen-custom-articles").classList.add("active");
+    renderCustomArticleList();
+  });
+  document.getElementById("btn-custom-back").addEventListener("click", function () {
+    document.getElementById("screen-custom-articles").classList.remove("active");
     document.getElementById("screen-home").classList.add("active");
   });
   function bindErFilterRow(rowId, datasetKey, stateKey) {
@@ -2379,7 +2443,13 @@
     document.getElementById("detail-source").textContent = a.source;
     document.getElementById("detail-readtime").textContent = formatReadTime(a.readTime);
     document.getElementById("detail-title").textContent = a.title;
-    document.getElementById("detail-link").href = a.link;
+    // Custom "Bizden Gelenler" pieces (2026-08-17) may have no real external
+    // URL (a.link === "") — hide the "Read at source" link entirely rather
+    // than pointing it at an empty/self href, same "never a dead control"
+    // rule as everywhere else in this file.
+    var detailLinkEl = document.getElementById("detail-link");
+    if (a.link) { detailLinkEl.href = a.link; detailLinkEl.style.display = ""; }
+    else { detailLinkEl.style.display = "none"; }
     renderBodyWithSentenceSpans(a.bodyParagraphs || []);
     applyReadingWidth();
     state.sessionStartTime = Date.now();
@@ -3157,6 +3227,7 @@
     if (document.getElementById("screen-vocab").classList.contains("active")) renderVocabScreen();
     if (document.getElementById("screen-progress").classList.contains("active")) renderProgressScreen();
     if (document.getElementById("screen-browse-science").classList.contains("active")) renderList();
+    if (document.getElementById("screen-custom-articles").classList.contains("active")) renderCustomArticleList();
   });
 
   // ---- Generic confirm overlay (§ above index.html comment) ----
@@ -3334,6 +3405,9 @@
     }
     if (document.getElementById("screen-browse-science").classList.contains("active")) {
       document.getElementById("btn-browse-back").click(); return true;
+    }
+    if (document.getElementById("screen-custom-articles").classList.contains("active")) {
+      document.getElementById("btn-custom-back").click(); return true;
     }
     if (document.getElementById("screen-vocab").classList.contains("active")) {
       document.getElementById("btn-vocab-back").click(); return true;

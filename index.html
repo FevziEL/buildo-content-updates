@@ -452,6 +452,10 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <span data-i18n="home.secondary.browse">Browse Science</span>
       </button>
+      <button class="secondary-action" id="btn-home-custom">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        <span data-i18n="home.secondary.custom">From Us</span>
+      </button>
       <button class="secondary-action" id="btn-home-saved">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
         <span data-i18n="home.secondary.saved">Saved Articles</span>
@@ -566,6 +570,28 @@
     </div>
     <div id="er-article-list"></div>
   </div>
+</div>
+
+<!-- ═══════════════ SCREEN — FROM US / "BİZDEN GELENLER" (2026-08-17) ═══════════════
+     Original pieces written for Buildo, bundled locally (assets/custom_articles.js)
+     — not fetched from any feed. Opens through the exact same reading/build-up/
+     vocabulary/shadowing/comprehension flow as any other article
+     (openArticleObject), just from its own dedicated entry point and list,
+     kept separate from the algorithmic Browse Science / Today's Science pool. -->
+<div id="screen-custom-articles" class="screen">
+  <div class="settings-header">
+    <button class="icon-btn" id="btn-custom-back" data-i18n-aria="common.back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="title" data-i18n="custom.title">From Us</div>
+  </div>
+  <div class="settings-block" style="padding-top:0; padding-bottom:0;">
+    <p style="font-size:12.5px; opacity:0.65; margin:0 0 4px;" data-i18n="custom.subtitle">Original pieces written for Buildo readers.</p>
+  </div>
+  <div id="custom-empty" class="empty-state" hidden>
+    <p data-i18n="custom.empty">No pieces here yet.</p>
+  </div>
+  <div id="custom-article-list"></div>
 </div>
 
 <!-- ═══════════════ SCREEN — MY VOCABULARY ═══════════════ -->
@@ -1075,6 +1101,7 @@
 <script src="phonetic.js"></script>
 <script src="sentences.js"></script>
 <script src="external_sources.js"></script>
+<script src="custom_articles.js"></script>
 <script src="dict_en_tr.js"></script>
 <script src="word_bubble.js"></script>
 <script src="app.js"></script>

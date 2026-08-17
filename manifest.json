@@ -1,12 +1,12 @@
 {
-  "contentVersion": 4,
+  "contentVersion": 5,
   "minAppVersionCode": 17,
-  "notes": "v0.14.4: matches versionCode 17 APK. Adds custom_articles.js (Bizden Gelenler / From Us) to the updatable set - future new pieces can ship via this mechanism without a new APK.",
+  "notes": "v0.14.5: Bizden Gelenler Part 2 added (custom_articles.js) - content-update-only push, no new APK, confirms the mechanism works for this file too.",
   "files": [
     {
       "path": "app.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/app.js",
-      "sha256": "13522e9aedd5b47bae71f9b4bd03beab1b92766837fd830b3b51911a8da1f111"
+      "sha256": "7cd0005a5bf34fc948d5d00cb4675f94ecd1da809e89f13bc384e251cfa53986"
     },
     {
       "path": "dict_en_tr.js",
@@ -46,7 +46,7 @@
     {
       "path": "custom_articles.js",
       "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/custom_articles.js",
-      "sha256": "d7b65890872645c490f8f0aab48c7de76ebeedea898b49f00fc94fdb44181275"
+      "sha256": "fd749240c04e8d6784d8901d74d2fe48884afe34a6a633b8415031a160f9cf23"
     },
     {
       "path": "i18n/en.js",

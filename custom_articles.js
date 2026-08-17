@@ -57,6 +57,25 @@
         "This means that plastic does not exist around a plant as an inert contaminant. It becomes part of a complex biological system.",
         "And this may be the beginning of a much larger scientific story."
       ]
+    },
+    {
+      id: "custom_microplastics_and_plants_part2",
+      topic: "cevre",
+      source: "Bizden Gelenler",
+      title: "Microplastics and Plants: How Do Particles Enter?",
+      link: "",
+      pubDate: "2026-08-17T06:00:00Z",
+      image: "",
+      bodyParagraphs: [
+        "Part 2 — The Root Is Not the Only Door",
+        "Roots were initially considered the primary route through which plants encounter microplastics. Experimental studies now suggest that small plastic particles, particularly nanoplastics, can associate with root surfaces and, under certain conditions, enter internal tissues.",
+        "However, the story does not stop underground.",
+        "Leaves can also be exposed directly through atmospheric deposition. Recent research has shown that nanoscale plastic particles deposited on foliage can penetrate through stomatal openings and subsequently become associated with internal tissues and vascular structures. This finding is particularly important for agricultural crops because atmospheric contamination may provide an exposure pathway independent of soil contamination.",
+        "The plant therefore has two very different interfaces with plastic: the root–soil interface belowground and the leaf–atmosphere interface aboveground.",
+        "What makes the situation even more interesting is that these pathways may interact. A particle entering through a leaf does not necessarily remain there. Experiments have demonstrated that some nanoplastics can move between plant organs, although transport efficiency is generally limited and highly dependent on particle and plant characteristics.",
+        "The plant is not simply absorbing plastic.",
+        "It is selectively interacting with it."
+      ]
     }
   ];
 

@@ -76,6 +76,26 @@
         "The plant is not simply absorbing plastic.",
         "It is selectively interacting with it."
       ]
+    },
+    {
+      id: "custom_microplastics_and_plants_part3",
+      topic: "cevre",
+      source: "Bizden Gelenler",
+      title: "Microplastics and Plants: What Happens Inside?",
+      link: "",
+      pubDate: "2026-08-17T12:00:00Z",
+      image: "",
+      bodyParagraphs: [
+        "Part 3 — When Plastic Meets Plant Physiology",
+        "Once plants encounter microplastics or nanoplastics, the biological response can extend far beyond physical particle accumulation.",
+        "One of the most frequently observed responses involves oxidative stress. Plastic particles can disturb cellular homeostasis and stimulate the production of reactive oxygen species such as hydrogen peroxide and superoxide. Plants respond by activating antioxidant systems involving enzymes such as superoxide dismutase, catalase, peroxidases, and enzymes of the ascorbate–glutathione cycle.",
+        "At first, this response may represent successful adaptation. Under stronger or prolonged exposure, however, antioxidant capacity may become insufficient, resulting in membrane damage, altered metabolism, and growth inhibition.",
+        "Photosynthesis is another important target. Studies in crops including lettuce have reported changes in chlorophyll content, chlorophyll fluorescence, electron transport, and photosynthetic performance following exposure to plastic particles.",
+        "But perhaps the most interesting aspect is that these responses may not be caused by the particles alone.",
+        "Microplastics can also modify nutrient availability, soil properties, and microbial communities surrounding roots. The resulting physiological response may therefore represent a combination of direct particle effects and indirect changes in the plant's environment.",
+        "The plastic particle may be small.",
+        "The biological response can be systemic."
+      ]
     }
   ];
 

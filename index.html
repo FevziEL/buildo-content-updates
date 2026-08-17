@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Buildo</title>
+<link rel="stylesheet" href="modernist.css">
+<style>
+  html, body { margin: 0; height: 100%; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+  body { padding-bottom: env(safe-area-inset-bottom); }
+  :root { --font-scale: 1; }
+
+  :root[data-theme="dark"] {
+    --color-bg: #141312;
+    --color-surface: #221f1e;
+    --color-text: #f2efee;
+    --color-divider: color-mix(in srgb, #f2efee 30%, transparent);
+  }
+  :root[data-theme="dark"] .stripe-ph {
+    background: repeating-linear-gradient(135deg, #3a3736 0 8px, #2c2a29 8px 16px);
+    color: #9b9797;
+  }
+
+  .screen { display: none; min-height: 100vh; background: var(--color-bg); }
+  .screen.active { display: block; }
+
+  .stripe-ph {
+    background: repeating-linear-gradient(135deg, var(--color-neutral-300) 0 8px, var(--color-neutral-200) 8px 16px);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--color-neutral-700); font-family: ui-monospace, monospace; font-size: 10px;
+    text-align: center; letter-spacing: 0.02em;
+  }
+  .chip {
+    width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-heading); font-weight: 800; font-size: 12px; flex: none;
+    cursor: pointer; user-select: none;
+  }
+  .icon-btn {
+    width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+    background: transparent; border: none; flex: none; color: var(--color-text);
+    cursor: pointer; padding: 0;
+  }
+  .icon-btn:active { opacity: 0.6; }
+  img.real-thumb { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ---- Onboarding ---- */
+  .ob-wrap { min-height: 100vh; display: flex; flex-direction: column; box-sizing: border-box; padding: 28px 28px 32px; }
+  .ob-page { display: none; flex: 1; flex-direction: column; justify-content: center; }
+  .ob-page.active { display: flex; }
+  .ob-badge {
+    width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px; font-family: var(--font-heading); font-weight: 800; font-size: 24px;
+    color: var(--color-bg); background: var(--color-accent);
+  }
+  .ob-badge.ob-badge-logo { background: none; }
+  .ob-badge img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  /* Fixed px size (not %) — .brand-mark has no fixed width of its own (it's
+     an auto-sized flex item), so a percentage size here was indeterminate
+     and fell back to the image's full natural resolution, rendering a huge
+     logo above the article cards instead of the intended small top-bar
+     mark (user feedback, 2026-08-14). */
+  .brand-mark img { display: block; width: 26px; height: 26px; object-fit: contain; flex: none; }
+  .ob-page h2 { font-size: 24px; margin-bottom: 10px; }
+  .ob-page p { font-size: 14px; opacity: 0.75; line-height: 1.6; margin-bottom: 10px; }
+  .ob-list { list-style: none; margin: 16px 0 0; padding: 0; }
+  .ob-list li { display: flex; gap: 10px; font-size: 13.5px; opacity: 0.85; margin-bottom: 14px; align-items: flex-start; }
+  .ob-list li .n {
+    width: 22px; height: 22px; flex: none; background: var(--color-surface); color: var(--color-text);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-heading); font-weight: 800; font-size: 11px; border: 1px solid var(--color-divider);
+  }
+  .ob-step-demo { background: var(--color-surface); padding: 16px; margin-bottom: 16px; }
+  .ob-step-demo .chips-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+  .ob-step-demo .chip { border: 1px solid var(--color-divider); }
+  .ob-step-demo .chip.current { background: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent); }
+  #ob-demo-text { font-family: var(--font-heading); font-size: 16px; min-height: 24px; }
+  .ob-dots { display: flex; gap: 6px; justify-content: center; margin: 20px 0 18px; }
+  .ob-dots .dot { width: 8px; height: 8px; background: var(--color-divider); }
+  .ob-dots .dot.active { background: var(--color-accent); }
+  .ob-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ob-actions .btn-ghost { font-size: 13px; }
+  .ob-actions .btn-primary { min-width: 120px; }
+
+  /* ---- Login ---- */
+  .login-wrap {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 32px 28px; box-sizing: border-box;
+  }
+  .login-mark { font-family: var(--font-heading); font-weight: 800; font-size: 34px; margin-bottom: 6px; }
+  .login-tag { font-size: 13px; opacity: 0.65; margin-bottom: 36px; max-width: 320px; }
+  .login-wrap .field { margin-bottom: 14px; }
+
+  /* ---- Home ---- */
+  .top-bar { padding: 16px 20px 8px; display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+  .brand-mark { display: flex; align-items: center; gap: 8px; }
+  .brand-word { font-family: var(--font-heading); font-weight: 800; font-size: 19px; }
+  .top-bar-actions { display: flex; align-items: center; gap: 2px; }
+  .search-row { gap: 8px; padding: 0 20px 12px; align-items: center; }
+  .search-row:not([hidden]) { display: flex; } /* v0.13 fix: see .btn note in modernist.css — same [hidden]-vs-author-display cascade bug */
+  .search-row .input { flex: 1; }
+  .search-row .clear-btn { font-size: 13px; opacity: 0.6; cursor: pointer; padding: 4px; }
+  .home-section { padding: 4px 20px 22px; }
+  .section-label {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5;
+    margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--color-divider);
+  }
+  .greeting { padding: 4px 20px 14px; font-size: 15px; opacity: 0.75; }
+  .continue-card-wrap .article-row { padding-left: 0; padding-right: 0; }
+  #continue-card .btn { margin-top: 4px; }
+  .streak-badge { font-size: 12px; font-family: var(--font-heading); font-weight: 800; }
+  .mini-list .article-row { padding-left: 0; padding-right: 0; }
+  .filter-row { display: flex; gap: 8px; padding: 0 0 12px; overflow-x: auto; align-items: center; }
+  .filter-row .tag { border-radius: 0; cursor: pointer; white-space: nowrap; border: 1px solid transparent; }
+  .filter-row .tag-outline { border: 1px solid var(--color-accent); }
+  .refresh-btn { margin-left: auto; font-size: 11px; color: var(--color-accent); cursor: pointer; white-space: nowrap; flex: none; }
+  .external-reading-entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--color-accent); color: var(--color-bg); padding: 16px 18px; cursor: pointer; }
+  .external-reading-entry-title { font-family: var(--font-heading); font-weight: 800; font-size: 15px; }
+  .external-reading-entry-sub { font-size: 11.5px; opacity: 0.85; margin-top: 3px; }
+  .external-reading-entry-arrow { font-size: 20px; flex: none; }
+
+  /* ---- Today's Science (v0.13 Home redesign) ---- */
+  .today-science-list { display: flex; flex-direction: column; gap: 14px; }
+  .today-science-card { border: 1px solid var(--color-divider); cursor: pointer; }
+  .today-science-card .ts-thumb { width: 100%; height: 140px; overflow: hidden; }
+  .today-science-card .ts-body { padding: 14px 16px 16px; }
+  .today-science-card .ts-eyebrow { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 6px; }
+  .today-science-card .ts-title { font-family: var(--font-heading); font-weight: 800; font-size: 16px; line-height: 1.3; margin-bottom: 6px; }
+  .today-science-card .ts-meta { display: flex; align-items: center; gap: 8px; font-size: 11.5px; opacity: 0.6; margin-bottom: 8px; }
+  .today-science-card .ts-summary { font-size: 12.5px; opacity: 0.75; line-height: 1.5; margin-bottom: 10px; }
+  .today-science-card .ts-foot { display: flex; align-items: center; justify-content: space-between; }
+  .today-science-card .ts-save { font-size: 18px; color: var(--color-divider); cursor: pointer; line-height: 1; padding: 2px 6px; }
+  .today-science-card .ts-save.on { color: var(--color-accent); }
+
+  /* ---- Secondary actions (v0.13 Home redesign) ---- */
+  .secondary-actions-section { padding-top: 0; }
+  .secondary-actions-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+  .secondary-action {
+    display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none;
+    width: 84px; padding: 12px 6px; background: var(--color-surface); border: none;
+    color: var(--color-text); cursor: pointer; font: inherit;
+  }
+  .secondary-action span { font-size: 10.5px; text-align: center; line-height: 1.25; opacity: 0.8; }
+  .secondary-action:active { background: var(--color-neutral-300); }
+  .er-filter-row { display: flex; gap: 8px; padding: 0 0 12px; overflow-x: auto; }
+  .er-filter-row .tag { border-radius: 0; cursor: pointer; white-space: nowrap; border: 1px solid var(--color-accent); }
+  .er-card { padding: 14px 0; border-bottom: 1px solid var(--color-divider); cursor: pointer; }
+  .er-card-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+  .er-card-title { font-family: var(--font-heading); font-weight: 800; font-size: 14.5px; margin-bottom: 4px; }
+  .er-card-sub { font-size: 11px; opacity: 0.6; }
+  .er-card-summary { font-size: 12px; opacity: 0.75; margin-top: 6px; line-height: 1.4; }
+  .er-link-badge { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.55; }
+  .top-divider { border-top: 2px solid var(--color-divider); }
+  .status-row { padding: 28px 20px; text-align: center; font-size: 13px; opacity: 0.65; }
+  .status-row .btn { margin-top: 10px; }
+  .empty-state { padding: 32px 20px; text-align: center; }
+  .empty-state p { font-size: 13px; opacity: 0.65; margin: 0 0 14px; }
+  .article-row {
+    display: flex; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--color-divider);
+    cursor: pointer;
+  }
+  .article-row:active { background: color-mix(in srgb, var(--color-text) 5%, transparent); }
+  .article-row .thumb { width: 72px; height: 72px; flex: none; overflow: hidden; }
+  .article-row .meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .article-row .meta-row .tag { border-radius: 0; font-size: 10px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0; }
+  .article-row .read-time { font-size: 11px; opacity: 0.5; white-space: nowrap; flex-shrink: 0; }
+  .save-star { margin-left: auto; font-size: 16px; color: var(--color-divider); cursor: pointer; line-height: 1; padding: 2px 4px; flex: none; }
+  .save-star.on { color: var(--color-accent); }
+  .article-row .title {
+    font-size: calc(15px * var(--font-scale)); margin-bottom: 4px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .done-check { color: var(--color-accent); }
+  .article-row .level-tag { border-radius: 0; font-size: 10px; white-space: nowrap; flex-shrink: 0; }
+  .article-row[hidden] { display: none; }
+
+  /* ---- Settings ---- */
+  .settings-header { padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+  .settings-header .title { font-family: var(--font-heading); font-weight: 800; font-size: 16px; }
+  .settings-block { padding: 8px 20px 28px; }
+  .settings-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; margin: 20px 0 10px; }
+  .settings-label:first-child { margin-top: 4px; }
+  .font-slider-row { display: flex; align-items: center; gap: 12px; }
+  .font-slider-row input[type=range] { flex: 1; accent-color: var(--color-accent); }
+  .font-slider-row .sample {
+    font-size: calc(15px * var(--font-scale)); font-family: var(--font-heading); font-weight: 800;
+    min-width: 44px; text-align: right;
+  }
+  .font-preview {
+    margin-top: 14px; padding: 14px; background: var(--color-surface);
+    font-size: calc(14px * var(--font-scale)); line-height: 1.5;
+  }
+  .settings-user { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+  .toggle-row { align-items: center; justify-content: space-between; padding: 4px 0; }
+  .toggle-row:not([hidden]) { display: flex; } /* v0.13 fix: see .btn note in modernist.css */
+  .toggle-row label { font-size: 14px; }
+  .switch { position: relative; width: 42px; height: 24px; flex: none; }
+  .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .switch .track { position: absolute; inset: 0; background: var(--color-neutral-300); pointer-events: none; }
+  .switch .knob { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: var(--color-bg); transition: left 0.15s; pointer-events: none; }
+  .switch input:checked ~ .track { background: var(--color-accent); }
+  .switch input:checked ~ .knob { left: 21px; }
+
+  /* ---- Settings nav rows (About ›, Changelog ›) + About screen ---- */
+  .settings-nav-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; border-top: 1px solid var(--color-divider); cursor: pointer; font-size: 14px;
+  }
+  .settings-nav-arrow { opacity: 0.5; font-size: 16px; }
+  .about-block { display: flex; flex-direction: column; align-items: flex-start; padding-top: 24px; }
+  .about-block .settings-nav-row { width: 100%; margin-top: 10px; }
+
+  /* ---- Detail ---- */
+  .detail-header { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+  .detail-header-actions { display: flex; align-items: center; }
+  .hero { width: 100%; height: 180px; overflow: hidden; }
+  .detail-content { padding: 18px 20px 0; }
+  .detail-meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .detail-meta-row .tag { border-radius: 0; font-size: 10px; }
+  .source-link { display: inline-block; font-size: 12px; margin: -4px 0 20px; }
+  .seek-row { align-items: center; gap: 8px; margin: -8px 0 18px; }
+  .seek-row:not([hidden]) { display: flex; } /* v0.13 fix: see .btn note in modernist.css */
+  .seek-skip-btn { width: 28px; height: 28px; color: var(--color-accent); }
+  .seek-row input[type=range] { flex: 1; accent-color: var(--color-accent); }
+  .seek-label { font-size: 10.5px; opacity: 0.55; white-space: nowrap; min-width: 34px; text-align: right; }
+
+  /* ---- Turkish translation section (word modal) ---- */
+  .tr-section { border: 1px solid var(--color-divider); padding: 12px 14px; margin: 2px 0 4px; }
+  .tr-header { display: flex; align-items: center; gap: 8px; }
+  .tr-flag { font-size: 15px; line-height: 1; }
+  .tr-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; }
+  .tr-body { margin-top: 10px; font-size: 14px; }
+  .tr-result { font-family: var(--font-heading); font-weight: 800; }
+  .tr-retry { cursor: pointer; text-decoration: underline; font-size: 13px; }
+  .article-body { font-size: calc(13.5px * var(--font-scale)); opacity: 0.85; line-height: 1.65; margin: 0 0 20px; }
+  .article-body p { margin: 0 0 12px; }
+  .article-body p:last-child { margin-bottom: 0; }
+  .body-word { border-bottom: 1.5px dotted var(--color-accent); cursor: pointer; }
+  .glossary-block { padding: 0 20px 32px; }
+  .glossary-item { display: flex; flex-direction: column; gap: 2px; padding: 10px 0; border-bottom: 1px solid var(--color-divider); cursor: pointer; }
+  .glossary-item:last-child { border-bottom: none; }
+  .glossary-word { font-family: var(--font-heading); font-weight: 800; font-size: calc(13.5px * var(--font-scale)); }
+  .glossary-word .pos { font-family: var(--font-body); font-weight: 400; font-style: italic; opacity: 0.55; font-size: 11px; margin-left: 6px; }
+  .glossary-def { font-size: calc(12.5px * var(--font-scale)); opacity: 0.75; line-height: 1.5; }
+  .glossary-loading { font-size: 12px; opacity: 0.55; }
+  #detail-title { font-size: calc(21px * var(--font-scale)); margin: 0 0 8px; }
+  .practice-block { padding: 0 20px 32px; }
+  .build-up-tip { font-size: 12px; opacity: 0.6; font-style: italic; margin: -8px 0 16px; }
+  .seg-switch { display: flex; border: 1px solid var(--color-divider); margin-bottom: 20px; cursor: pointer; }
+  .seg-switch .seg-item {
+    flex: 1; text-align: center; padding: 9px 0; font-size: 12px;
+    border-left: 1px solid var(--color-divider);
+  }
+  .seg-switch .seg-item:first-child { border-left: none; }
+  .seg-switch .seg-item.active {
+    font-family: var(--font-heading); font-weight: 800;
+    background: var(--color-accent); color: var(--color-bg);
+  }
+  .step-chips { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .step-chips .chip.done { background: var(--color-neutral-800); color: var(--color-bg); }
+  .step-chips .chip.current { background: var(--color-accent); color: var(--color-bg); }
+  .step-chips .chip.upcoming { border: 1px solid var(--color-divider); color: var(--color-text); }
+  .build-card { background: var(--color-surface); padding: 18px; margin-bottom: 16px; }
+  .build-card .kicker { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 10px; }
+  .build-card .sentence { font-size: calc(17px * var(--font-scale)); line-height: 1.4; margin: 0 0 10px; font-family: var(--font-heading); font-weight: 400; min-height: 48px; }
+  .build-card .sentence strong { color: var(--color-accent-700); font-weight: 800; }
+  .build-card .phonetic { font-size: calc(12.5px * var(--font-scale)); line-height: 1.4; margin: 0 0 14px; color: color-mix(in srgb, var(--color-text) 60%, transparent); font-style: italic; }
+  .progress-track { height: 4px; background: var(--color-neutral-300); }
+  .progress-fill { height: 100%; background: var(--color-accent); transition: width 0.2s ease; }
+  .rate-chips-row { display: flex; gap: 6px; margin-bottom: 12px; }
+  .rate-chip { font-size: 11px; padding: 4px 10px; border-radius: 0; cursor: pointer; }
+  .controls-row { display: flex; gap: 10px; }
+  .controls-row .btn { flex: 1; }
+  .controls-row .btn.speaking { background: var(--color-accent-700); color: var(--color-bg); }
+  .next-hint { font-size: 12px; opacity: 0.7; text-align: center; margin-top: 14px; }
+  .next-hint .btn-ghost { font-size: 12px; }
+
+  /* ---- Overlays (word modal / review / completion / shadowing) built on
+     modernist's .dialog-backdrop / .dialog classes ---- */
+  #word-modal-backdrop, #review-overlay, #completion-overlay, #shadowing-overlay { z-index: 50; }
+  .modal-close { position: absolute; top: 10px; right: 10px; }
+  .dialog { position: relative; }
+  #review-grades { display: flex; gap: 8px; }
+  #review-grades .btn { flex: 1; }
+  .review-progress { font-size: 11px; opacity: 0.5; text-align: center; margin-bottom: 4px; }
+  .glossary-example { font-size: calc(12px * var(--font-scale)); opacity: 0.65; font-style: italic; margin-top: 4px; }
+  #completion-words { margin: 6px 0 4px; }
+
+  /* ---- Reading Mode ---- */
+  .reading-mode-row { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; flex-wrap: wrap; }
+  .reading-mode-row .font-btns { display: inline-flex; border: 1px solid var(--color-divider); }
+  .reading-mode-row .font-btns span { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: var(--font-heading); font-weight: 800; }
+  .reading-mode-row .font-btns span:first-child { border-right: 1px solid var(--color-divider); }
+  .reading-width-opt { font-size: 11px; padding: 5px 10px; border-radius: 0; cursor: pointer; }
+
+  /* ---- TTS sentence highlighting ---- */
+  .tts-sentence.speaking { background: color-mix(in srgb, var(--color-accent) 20%, transparent); }
+  .tts-sentence { transition: background 0.15s; }
+
+  /* ---- Offline banner ---- */
+  .offline-banner { margin: 0 20px 16px; padding: 12px 14px; background: var(--color-surface); border-left: 3px solid var(--color-accent); font-size: 12.5px; }
+  .offline-banner strong { display: block; font-family: var(--font-heading); font-size: 13px; margin-bottom: 2px; }
+
+  /* ---- Progress screen ---- */
+  .progress-stats-grid { display: flex; flex-wrap: wrap; gap: 22px; margin: 6px 0 26px; }
+  .progress-stat-value { font-family: var(--font-heading); font-weight: 800; font-size: 26px; }
+  .progress-stat-label { font-size: 11px; opacity: 0.55; margin-top: 2px; }
+  .history-row { padding: 10px 0; border-bottom: 1px solid var(--color-divider); display: flex; justify-content: space-between; align-items: center; }
+  .history-row:last-child { border-bottom: none; }
+  .history-date { font-family: var(--font-heading); font-weight: 800; font-size: 13px; }
+  .history-meta { font-size: 12px; opacity: 0.6; }
+
+  /* ---- Vocabulary search/filter ---- */
+  .vocab-search-row { margin-bottom: 12px; }
+  .vocab-filter-row { display: flex; gap: 8px; margin-bottom: 18px; }
+
+  /* ---- Shadowing / Recall / Comprehension / Speaking (shared) ---- */
+  .stage-sentence { font-size: 19px; font-family: var(--font-heading); font-weight: 400; line-height: 1.4; text-align: center; margin: 14px 0 22px; }
+  .stage-counter { text-align: center; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; margin-bottom: 4px; }
+  .stage-level-label { text-align: center; font-size: 10px; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 6px; }
+  .stage-hint { text-align: center; font-size: 12.5px; opacity: 0.6; font-style: italic; margin: -14px 0 18px; }
+  .shadowing-actions { display: flex; flex-direction: column; gap: 10px; }
+  .lesson-checklist { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 16px; }
+  .checklist-item { font-size: 10.5px; opacity: 0.4; white-space: nowrap; }
+  .checklist-item.done { opacity: 0.85; color: var(--color-accent); }
+  .comp-options { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+  .comp-option {
+    padding: 12px 14px; border: 1px solid var(--color-divider); cursor: pointer; font-size: 14px;
+  }
+  .comp-option:active { background: color-mix(in srgb, var(--color-text) 5%, transparent); }
+  .comp-options.answered .comp-option { cursor: default; }
+  .comp-option.correct { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
+  .comp-option.wrong { border-color: var(--color-divider); opacity: 0.5; text-decoration: line-through; }
+  .comp-evidence { margin-top: 12px; padding: 10px 12px; background: var(--color-surface); border-left: 3px solid var(--color-accent); }
+  .comp-evidence-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; margin-bottom: 4px; }
+  .comp-evidence-text { font-size: 12.5px; font-style: italic; opacity: 0.85; line-height: 1.5; }
+  .stage-question { font-size: 16px; font-family: var(--font-heading); line-height: 1.4; margin: 10px 0 4px; }
+  .stage-guidance { font-size: 12px; opacity: 0.55; margin-bottom: 4px; }
+  .stage-starter { font-size: 13px; font-style: italic; opacity: 0.65; margin: 4px 0 10px; }
+  .word-chip-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
+  .word-chip-row .tag { cursor: pointer; }
+  .speaking-input {
+    width: 100%; min-height: 110px; resize: vertical; font: inherit; padding: 12px;
+    margin: 8px 0 14px; background: var(--color-surface); border: 1px solid var(--color-divider);
+    color: var(--color-text); box-sizing: border-box;
+  }
+  .speaking-input:focus-visible { border-color: var(--color-accent); outline: none; }
+
+  /* ---- Daily goal radios ---- */
+  .goal-row { display: flex; gap: 8px; }
+  .goal-opt { flex: 1; text-align: center; padding: 10px 0; border: 1px solid var(--color-divider); cursor: pointer; font-family: var(--font-heading); font-weight: 800; font-size: 13px; }
+  .goal-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .goal-opt:has(input:checked) { background: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SCREEN — ONBOARDING (2 pages) ═══════════════ -->
+<div id="screen-onboarding" class="screen active">
+  <div class="ob-wrap">
+    <div class="ob-page active" data-page="1">
+      <div class="ob-badge ob-badge-logo">
+        <img src="logo.png" alt="Buildo">
+      </div>
+      <h2 data-i18n="onboarding.page1.title">Read real news. Improve your English.</h2>
+      <p data-i18n="onboarding.page1.p1">Read real, interesting science content, learn new information, and improve your English naturally through it.</p>
+      <p data-i18n="onboarding.page1.p2">Browse live science, environment and health articles, open one that interests you, and read its full real text.</p>
+      <p data-i18n="onboarding.page1.p3">Under every article, a 3-sentence "build-up" practice is waiting for you, built from that article's own real vocabulary.</p>
+    </div>
+    <div class="ob-page" data-page="2">
+      <div class="ob-badge">10</div>
+      <h2 data-i18n="onboarding.page2.title">Build your English sentence by sentence.</h2>
+      <div class="ob-step-demo">
+        <div class="chips-row">
+          <span class="chip current" data-demo-step="0">1</span>
+          <span class="chip" data-demo-step="1">2</span>
+          <span class="chip" data-demo-step="2">3</span>
+          <span class="chip" data-demo-step="3">4</span>
+          <span class="chip" data-demo-step="4">5</span>
+          <span class="chip" data-demo-step="5">6</span>
+        </div>
+        <div id="ob-demo-text">This</div>
+      </div>
+      <ul class="ob-list">
+        <li><span class="n">1</span><span data-i18n-html="onboarding.page2.step1">Every sentence grows word by word across <strong>10 steps</strong>, from a short start to its full form — the just-added words are highlighted. Tap the boxes above to try it.</span></li>
+        <li><span class="n">2</span><span data-i18n-html="onboarding.page2.step2"><strong>🔊 Listen</strong> to the current step, or use the listen button on the article title to hear the whole article's real text.</span></li>
+        <li><span class="n">3</span><span data-i18n="onboarding.page2.step3">Tap important words to see their meaning, hear them, and save them to your vocabulary.</span></li>
+      </ul>
+    </div>
+    <div class="ob-dots"><span class="dot active" data-dot="1"></span><span class="dot" data-dot="2"></span></div>
+    <div class="ob-actions">
+      <span class="btn btn-ghost" id="btn-ob-skip" data-i18n="onboarding.skip">Skip</span>
+      <span class="btn btn-primary" id="btn-ob-next" data-i18n="onboarding.next">Next</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — LOGIN ═══════════════ -->
+<div id="screen-login" class="screen">
+  <div class="login-wrap">
+    <div class="login-mark" data-i18n="login.title">Buildo</div>
+    <p class="login-tag" style="margin-bottom:6px;" data-i18n="login.tagline">BuildUp English</p>
+    <p class="login-tag" data-i18n="login.prompt">What should we call you? No account needed — your progress stays on this phone only.</p>
+    <div class="field">
+      <label for="login-name" data-i18n="login.nameLabel">Name</label>
+      <input class="input" id="login-name" type="text" placeholder="" autocomplete="off">
+    </div>
+    <button class="btn btn-primary btn-block" id="btn-login" style="margin-top:6px;" data-i18n="login.continue">Continue</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — HOME ═══════════════
+     v0.13 redesign (see Buildo_v0.13_change_list.md §2): a simple,
+     article-first "what can I read today?" screen instead of a multi-
+     section dashboard. Today's Science (1-3 cards) is the only primary
+     content block; everything else (Browse, Saved, Vocabulary, Progress,
+     External Reading) is a small secondary entry point below it. -->
+<div id="screen-home" class="screen">
+  <div class="top-bar">
+    <div class="brand-mark">
+      <img src="logo.png" alt="" width="26" height="26">
+      <span class="brand-word">Buildo</span>
+    </div>
+    <div class="top-bar-actions">
+      <button class="icon-btn" id="btn-search-toggle" data-i18n-aria="nav.search" aria-label="Search">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </button>
+      <button class="icon-btn" id="btn-settings" data-i18n-aria="nav.settings" aria-label="Settings">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="search-row" id="search-row" hidden>
+    <input class="input" id="search-input" type="text" data-i18n-placeholder="home.search.placeholder" placeholder="Search articles…">
+    <span class="clear-btn" id="btn-search-clear">✕</span>
+  </div>
+
+  <div class="greeting" id="greeting-text"></div>
+
+  <div class="offline-banner" id="offline-banner" hidden>
+    <strong data-i18n="home.offline.title">You're offline.</strong> <span data-i18n="home.offline.body">Your saved lessons are still available.</span>
+  </div>
+
+  <!-- Secondary actions — moved above Today's Science (user feedback,
+       2026-08-14): finding "something else to read" (Browse Science) was
+       buried below the article cards; putting it right under the greeting
+       means it never needs a scroll to reach, regardless of how many
+       Today's Science cards render below it. -->
+  <div class="home-section secondary-actions-section">
+    <div class="secondary-actions-row">
+      <button class="secondary-action" id="btn-home-browse">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span data-i18n="home.secondary.browse">Browse Science</span>
+      </button>
+      <button class="secondary-action" id="btn-home-saved">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        <span data-i18n="home.secondary.saved">Saved Articles</span>
+      </button>
+      <button class="secondary-action" id="btn-vocab">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span data-i18n="home.secondary.vocab">My Vocabulary</span>
+      </button>
+      <button class="secondary-action" id="btn-progress">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        <span data-i18n="home.secondary.progress">Progress</span>
+      </button>
+      <button class="secondary-action" id="btn-open-external-reading">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        <span data-i18n="home.secondary.external">External Reading</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Today's Science — up to 3 cards: the in-progress lesson (if any)
+       first, then fresh recommendations filling the rest. Each card shows
+       only image, title, source, a short real-text summary, reading time
+       and a save star — nothing else, per the change-list's explicit
+       "don't overload the first screen" rule. -->
+  <div class="home-section" style="padding-bottom: 10px;">
+    <div class="section-label" data-i18n="home.todaysScience">Today's Science</div>
+    <div id="today-science-list" class="today-science-list"></div>
+    <div id="today-science-empty" class="empty-state" hidden>
+      <p data-i18n="home.todaysScience.empty">Waiting for today's science news to load…</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — BROWSE SCIENCE (v0.13) ═══════════════
+     The full filterable article list that used to live inline on Home
+     (§2) — now its own screen reached from the "Browse Science" /
+     "Saved Articles" secondary actions, so Home itself stays a single,
+     simple "what can I read today?" screen. -->
+<div id="screen-browse-science" class="screen">
+  <div class="settings-header">
+    <button class="icon-btn" id="btn-browse-back" data-i18n-aria="common.back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="title" id="browse-screen-title" data-i18n="browse.title">Browse Science</div>
+  </div>
+  <div class="settings-block" style="padding-top:0;">
+    <div class="filter-row" id="filter-row">
+      <span class="tag tag-accent" data-topic="all" data-i18n="browse.topic.all">All</span>
+      <span class="tag tag-outline" data-topic="bilim" data-i18n="browse.topic.science">Science</span>
+      <span class="tag tag-outline" data-topic="cevre" data-i18n="browse.topic.environment">Environment</span>
+      <span class="tag tag-outline" data-topic="saglik" data-i18n="browse.topic.health">Health</span>
+      <span class="refresh-btn" id="btn-refresh" data-i18n="browse.refresh">⟳ Refresh</span>
+    </div>
+    <div class="filter-row" id="status-row-filter" style="padding-bottom:0;">
+      <span class="tag tag-accent" data-status="all" data-i18n="browse.status.all">All</span>
+      <span class="tag tag-outline" data-status="saved" data-i18n="browse.status.saved">★ Saved</span>
+      <span class="tag tag-outline" data-status="completed" data-i18n="browse.status.completed">✓ Completed</span>
+    </div>
+  </div>
+
+  <div class="top-divider"></div>
+
+  <div id="status-row" class="status-row" hidden></div>
+  <div id="list-empty-state" class="empty-state" hidden>
+    <p><span data-i18n="browse.empty">No articles found.</span><br><span data-i18n="browse.empty.sub">Try another filter or keyword.</span></p>
+  </div>
+  <div id="article-list"></div>
+</div>
+
+<!-- ═══════════════ SCREEN — EXTERNAL READING (v0.11, §32) ═══════════════
+     A new, separate section per spec §3/§24 — does not replace or filter
+     the Home/Browse News screen above. Its own Level/Topic/Source picker,
+     its own registry (external_sources.js), science-priority by default. -->
+<div id="screen-external-reading" class="screen">
+  <div class="settings-header">
+    <button class="icon-btn" id="btn-er-back" data-i18n-aria="common.back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="title" data-i18n="external.title">External Reading</div>
+  </div>
+  <div class="settings-block">
+    <!-- No Level picker (v0.12) — this app doesn't label or compare
+         reading difficulty anywhere, see APP_SPEC_PROMPT.md §18/§33. Every
+         topic below is a science topic; non-science results are filtered
+         out entirely in external_sources.js (isScienceTopic), not just
+         deprioritized. -->
+    <div class="settings-label" data-i18n="external.topic">Topic</div>
+    <div class="er-filter-row" id="er-topic-row">
+      <span class="tag tag-accent" data-er-topic="all">All</span>
+      <span class="tag tag-outline" data-er-topic="science">Science</span>
+      <span class="tag tag-outline" data-er-topic="biology">Biology</span>
+      <span class="tag tag-outline" data-er-topic="plant_science">Plant Science</span>
+      <span class="tag tag-outline" data-er-topic="environment">Environmental Science</span>
+      <span class="tag tag-outline" data-er-topic="biotechnology">Biotechnology</span>
+      <span class="tag tag-outline" data-er-topic="ecology">Ecology</span>
+      <span class="tag tag-outline" data-er-topic="technology">Technology</span>
+      <span class="tag tag-outline" data-er-topic="health">Health</span>
+      <span class="tag tag-outline" data-er-topic="space">Space</span>
+    </div>
+    <div class="settings-label" data-i18n="external.source">Source</div>
+    <div class="er-filter-row" id="er-source-row">
+      <span class="tag tag-accent" data-er-source="all" data-i18n="external.allSources">All Sources</span>
+      <!-- Individual source chips are rendered by JS from
+           ExternalReading.availableSources() — only configured/working
+           sources ever appear here (spec §3). -->
+    </div>
+
+    <div class="settings-label" style="margin-top:18px;" data-i18n="external.recommended">Recommended for You</div>
+    <div id="er-status-row" class="status-row" hidden></div>
+    <div id="er-empty-state" class="empty-state" hidden>
+      <p><span data-i18n="external.empty">No articles found for this combination.</span><br><span data-i18n="external.empty.sub">Try a different topic or source.</span></p>
+    </div>
+    <div id="er-article-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — MY VOCABULARY ═══════════════ -->
+<div id="screen-vocab" class="screen">
+  <div class="settings-header">
+    <button class="icon-btn" id="btn-vocab-back" data-i18n-aria="common.back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="title" data-i18n="vocab.title">My Vocabulary</div>
+  </div>
+  <div class="settings-block">
+    <div class="card" id="review-card" hidden style="margin-bottom:20px;">
+      <div class="card-title" style="font-size:14px;" data-i18n="vocab.reviewToday">Review Today</div>
+      <div id="review-due-count" class="text-muted" style="font-size:12px;">0 words</div>
+      <span class="btn btn-primary btn-block" id="btn-start-review" data-i18n="vocab.startReview">Start Review</span>
+    </div>
+    <div class="vocab-search-row">
+      <input class="input" id="vocab-search-input" type="text" data-i18n-placeholder="vocab.search.placeholder" placeholder="Search vocabulary…">
+    </div>
+    <div class="vocab-filter-row" id="vocab-filter-row">
+      <span class="tag tag-accent" data-vfilter="all" data-i18n="vocab.filter.all">All</span>
+      <span class="tag tag-outline" data-vfilter="review" data-i18n="vocab.filter.review">To Review</span>
+      <span class="tag tag-outline" data-vfilter="known" data-i18n="vocab.filter.known">Known</span>
+    </div>
+    <div id="vocab-empty" class="empty-state" hidden>
+      <p><span data-i18n="vocab.empty">Your vocabulary is empty.</span><br><span data-i18n="vocab.empty.sub">Save useful words while reading.</span></p>
+      <span class="btn btn-secondary" id="btn-vocab-empty-browse" data-i18n="vocab.empty.cta">Start Reading</span>
+    </div>
+    <div id="vocab-no-match" class="empty-state" hidden>
+      <p data-i18n="vocab.noMatch">No words match your search.</p>
+    </div>
+    <div id="vocab-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — PROGRESS ═══════════════ -->
+<div id="screen-progress" class="screen">
+  <div class="settings-header">
+    <button class="icon-btn" id="btn-progress-back" data-i18n-aria="common.back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="title" data-i18n="progress.title">Your Progress</div>
+  </div>
+  <div class="settings-block">
+    <div class="progress-stats-grid" id="progress-stats"></div>
+    <div class="settings-label" data-i18n="progress.activePractice">Active Practice</div>
+    <div class="progress-stats-grid" id="active-practice-stats" style="margin-bottom:26px;"></div>
+    <div class="settings-label" style="margin-top:8px;" data-i18n="progress.history">Learning History</div>
+    <div id="history-empty" class="empty-state" hidden>
+      <p><span data-i18n="progress.history.empty">No practice history yet.</span><br><span data-i18n="progress.history.empty.sub">Complete a lesson to see it here.</span></p>
+    </div>
+    <div id="history-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — SETTINGS ═══════════════ -->
+<div id="screen-settings" class="screen">
+  <div class="settings-header">
+    <button class="icon-btn" id="btn-settings-back" data-i18n-aria="common.back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="title" data-i18n="settings.title">Settings</div>
+  </div>
+  <div class="settings-block">
+    <!-- Language (v0.13) — application UI only. Article body text is never
+         translated/altered by this setting; see i18n/core.js header. -->
+    <div class="settings-label" data-i18n="settings.language">Language</div>
+    <div class="seg" id="lang-switch" style="display:flex; width:100%;">
+      <label class="seg-opt" style="flex:1; justify-content:center;">
+        <input type="radio" name="lang" value="tr"><span data-i18n="settings.language.tr">Türkçe</span>
+      </label>
+      <label class="seg-opt" style="flex:1; justify-content:center;">
+        <input type="radio" name="lang" value="en"><span data-i18n="settings.language.en">English</span>
+      </label>
+    </div>
+
+    <div class="settings-label" data-i18n="settings.appearance">Appearance</div>
+    <div class="seg" id="theme-switch" style="display:flex; width:100%;">
+      <label class="seg-opt" style="flex:1; justify-content:center;">
+        <input type="radio" name="theme" value="light">☀️&nbsp; <span data-i18n="settings.light">Light</span>
+      </label>
+      <label class="seg-opt" style="flex:1; justify-content:center;">
+        <input type="radio" name="theme" value="dark">🌙&nbsp; <span data-i18n="settings.dark">Dark</span>
+      </label>
+    </div>
+
+    <div class="settings-label" data-i18n="settings.fontSize">Font Size</div>
+    <div class="font-slider-row">
+      <span style="font-size:11px; opacity:0.6;">A</span>
+      <input type="range" id="font-slider" min="85" max="140" step="5" value="100">
+      <span style="font-size:18px; opacity:0.6;">A</span>
+      <span class="sample" id="font-sample">100%</span>
+    </div>
+    <div class="font-preview" id="font-preview">Marine biologists have discovered that microplastics are now present in ocean water.</div>
+
+    <div class="settings-label" data-i18n="settings.speechRate">Reading Speed (Listen)</div>
+    <div class="font-slider-row">
+      <span style="font-size:11px; opacity:0.6;">🐢</span>
+      <input type="range" id="rate-slider" min="60" max="150" step="10" value="100">
+      <span style="font-size:14px; opacity:0.6;">🐇</span>
+      <span class="sample" id="rate-sample" style="font-size:14px;">1.0x</span>
+    </div>
+
+    <div class="settings-label" data-i18n="settings.dailyGoal">Daily Goal</div>
+    <div class="goal-row">
+      <label class="goal-opt"><input type="radio" name="daily-goal" value="1">1</label>
+      <label class="goal-opt"><input type="radio" name="daily-goal" value="2" checked>2</label>
+      <label class="goal-opt"><input type="radio" name="daily-goal" value="3">3</label>
+      <label class="goal-opt"><input type="radio" name="daily-goal" value="5">5</label>
+    </div>
+
+    <div class="settings-label" data-i18n="settings.learning">Learning</div>
+    <!-- The "always auto-translate" toggle was removed in v0.05: word
+         translation is now an instant offline lookup shown automatically
+         (tap-a-word bubble + top of the word modal), so the toggle would
+         have been a switch that changes nothing. -->
+    <div class="toggle-row">
+      <label for="reminder-toggle" data-i18n="settings.reminder">Daily practice reminder</label>
+      <label class="switch"><input type="checkbox" id="reminder-toggle"><span class="track"></span><span class="knob"></span></label>
+    </div>
+    <div class="toggle-row" id="reminder-time-row" hidden>
+      <label for="reminder-time" data-i18n="settings.reminderTime">Reminder time</label>
+      <input type="time" class="input" id="reminder-time" style="width:auto;">
+    </div>
+
+    <div class="settings-label" data-i18n="settings.account">Account</div>
+    <div class="settings-user" id="settings-username">—</div>
+
+    <!-- Content Update module (v0.10, §31) — lets app.js/dict_en_tr.js/etc. be
+         updated from outside the APK. Never silent: every check shows a real
+         result here, and reverting to the version that shipped in this APK is
+         always one tap away. -->
+    <div class="settings-label" data-i18n="settings.contentUpdates">Content Updates</div>
+    <div class="settings-user" id="content-update-status" data-i18n="settings.contentUpdates.bundled">Using the content bundled with the app.</div>
+    <div class="settings-user" id="content-update-checked" style="opacity:0.55; font-size:11px; margin-top:-8px;" data-i18n="settings.contentUpdates.notChecked">Not checked yet.</div>
+    <div style="display:flex; gap:8px; margin:10px 0;">
+      <span class="btn btn-secondary" id="btn-check-update" style="flex:1; text-align:center; cursor:pointer;" data-i18n="settings.contentUpdates.checkBtn">Check for Updates</span>
+    </div>
+    <div id="content-update-message" class="settings-user" style="display:none; font-size:12px; padding:10px; background:var(--color-surface);"></div>
+    <div style="margin-top:8px;">
+      <span class="source-link" id="btn-reset-update" style="cursor:pointer; display:none;" data-i18n="settings.contentUpdates.revert">Revert to bundled version ↺</span>
+    </div>
+
+    <!-- Data — v0.13 (change list §17/§18/§19): local-only export/import
+         backup, a data schema version, and a visible storage-usage figure.
+         Nothing here ever uploads data to a server. -->
+    <div class="settings-label" data-i18n="settings.data">Data</div>
+    <div class="settings-user"><span data-i18n="settings.data.schemaVersion">Data format version</span>: <span id="settings-schema-version">1</span></div>
+    <div class="settings-user" style="margin-bottom:10px;"><span data-i18n="settings.data.storageUsage">Storage used</span>: <span id="settings-storage-usage">—</span></div>
+    <p style="font-size:11.5px; opacity:0.6; line-height:1.5; margin:0 0 10px;" data-i18n="settings.data.exportHint">Creates a JSON backup of your saved articles, progress, vocabulary and settings, shared through your device's normal Share sheet. Nothing is uploaded to any server.</p>
+    <div style="display:flex; gap:8px; margin-bottom:10px;">
+      <span class="btn btn-secondary" id="btn-data-export" style="flex:1; text-align:center; cursor:pointer;" data-i18n="settings.data.export">Export My Data</span>
+      <span class="btn btn-secondary" id="btn-data-import" style="flex:1; text-align:center; cursor:pointer;" data-i18n="settings.data.import">Import My Data</span>
+    </div>
+    <div id="data-import-row" hidden style="margin-bottom:10px;">
+      <p style="font-size:11.5px; opacity:0.6; margin:0 0 6px;" data-i18n="settings.data.importHint">Paste a JSON backup created by Export My Data.</p>
+      <textarea class="input speaking-input" id="data-import-text" style="min-height:80px;" data-i18n-placeholder="settings.data.importPlaceholder" placeholder="Paste exported JSON here…"></textarea>
+      <span class="btn btn-primary" id="btn-data-import-apply" style="margin-top:8px;" data-i18n="settings.data.importBtn">Import</span>
+    </div>
+    <span class="source-link" id="btn-data-reset" style="cursor:pointer; color:var(--color-accent);" data-i18n="settings.data.reset">Reset Learning Data</span>
+    <div id="data-message" class="settings-user" style="display:none; font-size:12px; padding:10px; margin-top:8px; background:var(--color-surface);"></div>
+
+    <!-- About — v0.13: moved to its own sub-screen (change list §3) so
+         Settings itself never has to grow with the changelog. -->
+    <div class="settings-label" data-i18n="settings.about">About</div>
+    <div class="settings-nav-row" id="btn-open-about">
+      <span data-i18n="about.title">About</span><span class="settings-nav-arrow">›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — ABOUT (v0.13, change list §3) ═══════════════ -->
+<div id="screen-about" class="screen">
+  <div class="settings-header">
+    <button class="icon-btn" id="btn-about-back" data-i18n-aria="common.back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="title" data-i18n="about.title">About</div>
+  </div>
+  <div class="settings-block about-block">
+    <img src="logo.png" alt="Buildo" width="64" height="64" style="margin-bottom:14px;">
+    <div class="brand-word" style="font-size:24px; margin-bottom:2px;">Buildo</div>
+    <div style="font-size:13px; opacity:0.65; margin-bottom:18px;" data-i18n="about.tagline">Read. Discover. Learn.</div>
+    <p style="font-size:13.5px; opacity:0.8; line-height:1.6; margin-bottom:20px;" data-i18n="about.description">Buildo is a science reading and knowledge-discovery app that uses real, authentic English articles as the medium for practicing your English — through reading, listening, vocabulary, and guided writing.</p>
+    <div class="settings-user"><span data-i18n="about.version">Version</span> <span id="about-app-version">0.13</span></div>
+    <div class="settings-user" style="margin-bottom:20px;"><span data-i18n="about.developer">Developer</span>: <span data-i18n="about.developerValue">Buildo</span></div>
+    <div class="settings-nav-row" id="btn-open-changelog">
+      <span data-i18n="about.changelog">Changelog</span><span class="settings-nav-arrow">›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — CHANGELOG (v0.13, change list §3) ═══════════════ -->
+<div id="screen-changelog" class="screen">
+  <div class="settings-header">
+    <button class="icon-btn" id="btn-changelog-back" data-i18n-aria="common.back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="title" data-i18n="changelog.title">Changelog</div>
+  </div>
+  <div class="settings-block">
+    <div id="settings-changelog"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN — ARTICLE + BUILD-UP ═══════════════ -->
+<div id="screen-detail" class="screen">
+  <div class="detail-header">
+    <button class="icon-btn" id="btn-back" aria-label="Geri">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <div class="detail-header-actions">
+      <button class="icon-btn" id="btn-detail-save" aria-label="Kaydet" style="font-size:19px;">☆</button>
+      <button class="icon-btn" id="btn-share" aria-label="Paylaş">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"></line><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero stripe-ph grayscale" id="detail-hero">FOTOĞRAF — GRAYSCALE</div>
+
+  <div class="detail-content" id="detail-content">
+    <div class="detail-meta-row">
+      <span class="tag tag-outline" id="detail-source">ScienceDaily</span>
+      <span class="read-time" id="detail-readtime">6 dk okuma</span>
+    </div>
+    <h2 id="detail-title"></h2>
+    <div style="display:flex; align-items:center; gap:14px; margin: -4px 0 16px;">
+      <a id="detail-link" class="source-link" style="margin:0;" href="#" target="_blank" rel="noopener">Kaynağında oku ↗</a>
+      <span class="btn-ghost" id="btn-listen-article" style="cursor:pointer; font-size:12px; display:inline-flex; align-items:center; gap:5px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="7,5 20,12 7,19"></polygon></svg>
+        Makaleyi Dinle
+      </span>
+    </div>
+
+    <div id="article-seek-row" class="seek-row" hidden>
+      <button class="icon-btn seek-skip-btn" id="btn-article-skip-back" aria-label="Önceki cümle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM20 6L9 12l11 6z"></path></svg>
+      </button>
+      <input type="range" id="article-seek-bar" min="0" max="1" value="0" step="1">
+      <button class="icon-btn seek-skip-btn" id="btn-article-skip-fwd" aria-label="Sonraki cümle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM4 6l11 6-11 6z"></path></svg>
+      </button>
+      <span id="article-seek-label" class="seek-label">0 / 0</span>
+    </div>
+
+    <div class="reading-mode-row">
+      <span style="font-size:11px; opacity:0.55;">Okuma:</span>
+      <span class="font-btns">
+        <span id="btn-reading-font-minus">A−</span><span id="btn-reading-font-plus">A+</span>
+      </span>
+      <span class="tag tag-outline reading-width-opt" data-width="narrow">Narrow</span>
+      <span class="tag tag-accent reading-width-opt" data-width="normal">Normal</span>
+      <span class="tag tag-outline reading-width-opt" data-width="wide">Wide</span>
+    </div>
+
+    <!-- The Easy/Standard/Advanced/Original in-article rewrite selector
+         (leveler.js) was removed in v0.09 — see APP_SPEC_PROMPT.md §7.
+         The article always shows its one real, original body text.
+         v0.12: the Beginner/Intermediate/Advanced tier badge that used to
+         sit here is gone too — this app no longer labels or compares
+         reading difficulty anywhere, see APP_SPEC_PROMPT.md §18/§33. -->
+    <div id="detail-body" class="article-body"></div>
+  </div>
+
+  <div class="hr" style="margin: 0 20px 20px;"></div>
+
+  <div class="practice-block">
+    <div class="lesson-checklist" id="lesson-checklist"></div>
+    <h3 style="font-size: 17px; margin: 0 0 4px;">Build-up Pratiği</h3>
+    <p style="font-size: 12px; opacity: 0.65; margin: 0 0 10px;">Bu kategoriye uygun 3 cümle, her biri 10 adımda kelime kelime büyüyerek (build-up) genişler.</p>
+    <p class="build-up-tip" id="build-up-tip"></p>
+
+    <div class="seg-switch" id="seg-switch">
+      <div class="seg-item" data-idx="0">CÜMLE 1</div>
+      <div class="seg-item" data-idx="1">CÜMLE 2</div>
+      <div class="seg-item" data-idx="2">CÜMLE 3</div>
+    </div>
+
+    <div class="step-chips" id="step-chips"></div>
+
+    <div class="build-card">
+      <div class="kicker" id="step-kicker">ADIM 1 / 10</div>
+      <p class="sentence" id="step-sentence"></p>
+      <p class="phonetic" id="step-phonetic"></p>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width: 10%;"></div></div>
+    </div>
+
+    <div class="rate-chips-row">
+      <span class="tag tag-outline rate-chip" data-rate="0.8">0.8x</span>
+      <span class="tag tag-accent rate-chip" data-rate="1.0">1.0x</span>
+      <span class="tag tag-outline rate-chip" data-rate="1.2">1.2x</span>
+      <span class="tag tag-outline rate-chip" data-rate="1.5">1.5x</span>
+    </div>
+
+    <div class="controls-row">
+      <button class="btn btn-primary" id="btn-listen" style="width:100%;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="7,5 20,12 7,19"></polygon></svg>
+        Dinle
+      </button>
+    </div>
+    <div class="next-hint" id="next-hint"></div>
+  </div>
+
+  <div class="hr" style="margin: 0 20px 20px;"></div>
+
+  <div class="glossary-block" id="glossary-block">
+    <h3 style="font-size: 15px; margin: 0 0 4px;">Önemli Kelimeler</h3>
+    <p style="font-size: 12px; opacity: 0.65; margin: 0 0 14px;">Makaledeki önemli kelimeler ve İngilizce anlamları. Kaydetmek için dokun.</p>
+    <div id="glossary-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ WORD DETAIL MODAL ═══════════════ -->
+<div class="dialog-backdrop" id="word-modal-backdrop" hidden>
+  <div class="dialog">
+    <span class="icon-btn modal-close" id="btn-word-close">✕</span>
+    <div class="dialog-title" id="word-modal-word">word</div>
+    <div class="text-muted" id="word-modal-pos" style="font-size:12px; font-style:italic; margin-top:-8px;"></div>
+    <!-- Turkish meaning sits directly under the headword (v0.05) — it used
+         to be the last thing in the modal, behind a "Çevir" button, back
+         when it was a network request. It's an instant offline lookup now,
+         so it's shown immediately and first. -->
+    <div class="tr-section" style="margin-top:10px;">
+      <div class="tr-header">
+        <span class="tr-flag">🇹🇷</span>
+        <span class="tr-label">Türkçe</span>
+      </div>
+      <div id="word-modal-tr-body" class="tr-body"></div>
+    </div>
+    <div class="dialog-body" id="word-modal-def"></div>
+    <div class="dialog-body" id="word-modal-example" style="opacity:0.75; font-style:italic; font-size:13px; margin-top:-8px;"></div>
+    <div class="dialog-actions" style="justify-content:flex-start; flex-wrap:wrap;">
+      <span class="btn btn-secondary" id="btn-word-listen">🔊 Listen</span>
+      <span class="btn btn-secondary" id="btn-word-save">☆ Kelimeyi Kaydet</span>
+      <span class="btn btn-secondary" id="btn-word-known" hidden>✓ Biliyorum</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ REVIEW (FLASHCARD) OVERLAY ═══════════════ -->
+<div class="dialog-backdrop" id="review-overlay" hidden>
+  <div class="dialog">
+    <span class="icon-btn modal-close" id="btn-review-close">✕</span>
+    <div class="review-progress" id="review-counter">1 / 5</div>
+    <div class="dialog-title" id="review-word" style="text-align:center; font-size:26px;">word</div>
+    <div class="dialog-body" id="review-question" style="text-align:center; opacity:0.6;">What does this word mean?</div>
+    <div class="dialog-body" id="review-answer" hidden style="text-align:center;"></div>
+    <span class="btn btn-secondary btn-block" id="btn-review-listen" hidden style="margin-bottom:8px;">🔊 Listen</span>
+    <span class="btn btn-primary btn-block" id="btn-review-show">Show answer</span>
+    <div id="review-grades" hidden>
+      <div class="dialog-actions" style="justify-content:center;">
+        <span class="btn btn-secondary review-grade-btn" data-grade="hard">Hard</span>
+        <span class="btn btn-secondary review-grade-btn" data-grade="good">Good</span>
+        <span class="btn btn-primary review-grade-btn" data-grade="easy">Easy</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ COMPLETION OVERLAY ═══════════════ -->
+<div class="dialog-backdrop" id="completion-overlay" hidden>
+  <div class="dialog">
+    <div class="dialog-title" data-i18n="completion.title">Article complete ✓</div>
+    <div class="dialog-body" data-i18n="completion.body">You completed this English lesson.</div>
+    <div class="dialog-body" id="completion-stats" style="opacity:0.7;"></div>
+    <div class="lesson-checklist" id="completion-checklist" style="margin-bottom:10px;"></div>
+    <div id="completion-words"></div>
+    <div class="dialog-actions">
+      <span class="btn btn-secondary" id="btn-completion-vocab" data-i18n="completion.reviewVocab">Review Vocabulary</span>
+      <span class="btn btn-primary" id="btn-completion-home" data-i18n="completion.backToNews">Back to News</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SHADOWING MODE OVERLAY (3 levels) ═══════════════ -->
+<div class="dialog-backdrop" id="shadowing-overlay" hidden>
+  <div class="dialog">
+    <div id="shadowing-level-label" class="stage-level-label">GUIDED SHADOWING</div>
+    <div class="dialog-title" style="text-align:center;" data-i18n="shadowing.title">Shadowing Mode</div>
+    <div class="dialog-body" style="text-align:center; opacity:0.65; margin-top:-8px;" data-i18n="shadowing.subtitle">Listen to the sentence, then repeat it aloud.</div>
+    <div id="shadowing-counter" class="stage-counter">CÜMLE 1 / 3</div>
+    <p id="shadowing-sentence" class="stage-sentence"></p>
+    <div id="shadowing-hint" class="stage-hint" hidden></div>
+    <span class="btn btn-secondary btn-block" id="btn-shadowing-show" hidden style="margin-bottom:10px;" data-i18n="shadowing.showSentence">Show sentence</span>
+    <div class="shadowing-actions">
+      <span class="btn btn-secondary btn-block" id="btn-shadowing-listen" data-i18n="shadowing.listen">🔊 Listen</span>
+      <span class="btn btn-primary btn-block" id="btn-shadowing-next" data-i18n="shadowing.repeated">I repeated it →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DELAYED RECALL OVERLAY ═══════════════ -->
+<div class="dialog-backdrop" id="recall-overlay" hidden>
+  <div class="dialog">
+    <div class="dialog-title" style="text-align:center;" data-i18n="recall.title">Can you remember?</div>
+    <div class="dialog-body" style="text-align:center; opacity:0.65; margin-top:-8px;" data-i18n="recall.subtitle">You practiced this sentence earlier.</div>
+    <div id="recall-counter" class="stage-counter">CÜMLE 1 / 3</div>
+    <p id="recall-sentence" class="stage-sentence" hidden></p>
+    <div id="recall-prompts">
+      <span class="btn btn-secondary btn-block" id="btn-recall-listen" style="margin-bottom:10px;" data-i18n="recall.listenOnce">🔊 Listen once</span>
+      <div class="dialog-body" style="text-align:center; opacity:0.6; font-size:12.5px;" data-i18n="recall.tryWithoutLooking">Now try to say it without looking.</div>
+      <div class="shadowing-actions" style="margin-top:12px;">
+        <span class="btn btn-secondary btn-block" id="btn-recall-show" data-i18n="recall.showSentence">Show sentence</span>
+        <span class="btn btn-primary btn-block" id="btn-recall-remembered" data-i18n="recall.remembered">I remembered it</span>
+      </div>
+    </div>
+    <div id="recall-next-row" hidden>
+      <div class="dialog-body" style="text-align:center; opacity:0.6; font-size:12.5px;" data-i18n="recall.niceAttempt">Nice attempt. Compare your sentence with the original.</div>
+      <span class="btn btn-primary btn-block" id="btn-recall-next" style="margin-top:8px;" data-i18n="recall.continue">Continue →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ COMPREHENSION CHECK OVERLAY ═══════════════ -->
+<div class="dialog-backdrop" id="comprehension-overlay" hidden>
+  <div class="dialog">
+    <span class="icon-btn modal-close" id="btn-comprehension-close">✕</span>
+    <div id="comprehension-counter" class="stage-counter">SORU 1 / 3</div>
+    <div class="dialog-title" id="comprehension-question" style="font-size:18px;">question</div>
+    <div id="comprehension-options" class="comp-options"></div>
+    <div class="dialog-body" id="comprehension-feedback" hidden style="margin-top:6px;"></div>
+    <span class="btn btn-primary btn-block" id="btn-comprehension-next" hidden style="margin-top:10px;" data-i18n="comprehension.continue">Continue →</span>
+  </div>
+</div>
+
+<!-- ═══════════════ GUIDED SPEAKING OVERLAY ═══════════════ -->
+<div class="dialog-backdrop" id="guided-overlay" hidden>
+  <div class="dialog">
+    <span class="icon-btn modal-close" id="btn-guided-close">✕</span>
+    <div class="dialog-title" data-i18n="guided.title">Guided Speaking</div>
+    <div id="guided-form">
+      <div class="stage-question" id="guided-question">question</div>
+      <div class="stage-guidance" id="guided-guidance"></div>
+      <div class="settings-label" style="margin-top:14px;" data-i18n="guided.usefulWords">Useful Words</div>
+      <div id="guided-words" class="word-chip-row"></div>
+      <div class="settings-label" data-i18n="guided.startWith">Start With</div>
+      <div class="stage-starter" id="guided-starter"></div>
+      <textarea class="input speaking-input" id="guided-answer" data-i18n-placeholder="guided.answerPlaceholder" placeholder="Write your answer here…"></textarea>
+      <div class="dialog-actions" style="justify-content:space-between;">
+        <span class="btn btn-ghost" id="btn-guided-skip" data-i18n="guided.dontKnow">I don't know</span>
+        <span class="btn btn-primary" id="btn-guided-submit" data-i18n="guided.submit">Submit answer</span>
+      </div>
+    </div>
+    <div id="guided-result" hidden>
+      <div class="settings-label" data-i18n="guided.yourAnswer">Your Answer</div>
+      <p class="stage-sentence" id="guided-result-text" style="text-align:left; font-size:15px;"></p>
+      <div id="guided-feedback"></div>
+      <div class="dialog-actions" style="justify-content:flex-start; flex-wrap:wrap;">
+        <span class="btn btn-secondary" id="btn-guided-listen" data-i18n="guided.listenToAnswer">🔊 Listen to my answer</span>
+        <span class="btn btn-secondary" id="btn-guided-edit" data-i18n="guided.editAnswer">Edit answer</span>
+      </div>
+      <div class="dialog-body" style="opacity:0.65; font-size:12.5px; margin-top:10px;" data-i18n="guided.sayAloud">Now say your answer aloud.</div>
+      <span class="btn btn-primary btn-block" id="btn-guided-repeated" style="margin-top:8px;" data-i18n="guided.repeated">I repeated it →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ FREE RESPONSE OVERLAY ═══════════════ -->
+<div class="dialog-backdrop" id="free-overlay" hidden>
+  <div class="dialog">
+    <span class="icon-btn modal-close" id="btn-free-close">✕</span>
+    <div class="dialog-title" data-i18n="free.title">Your Turn</div>
+    <div id="free-form">
+      <div class="stage-question" id="free-question">question</div>
+      <div class="stage-guidance" id="free-guidance"></div>
+      <textarea class="input speaking-input" id="free-answer" data-i18n-placeholder="free.answerPlaceholder" placeholder="Your response…"></textarea>
+      <div class="dialog-actions" style="justify-content:space-between;">
+        <span class="btn btn-ghost" id="btn-free-skip" data-i18n="free.skip">Skip</span>
+        <span class="btn btn-primary" id="btn-free-submit" data-i18n="free.submit">Submit</span>
+      </div>
+    </div>
+    <div id="free-result" hidden>
+      <div class="settings-label" data-i18n="guided.yourAnswer">Your Answer</div>
+      <p class="stage-sentence" id="free-result-text" style="text-align:left; font-size:15px;"></p>
+      <div id="free-feedback"></div>
+      <div class="dialog-actions" style="justify-content:flex-start; flex-wrap:wrap;">
+        <span class="btn btn-secondary" id="btn-free-listen" data-i18n="guided.listenToAnswer">🔊 Listen to my answer</span>
+        <span class="btn btn-secondary" id="btn-free-edit" data-i18n="guided.editAnswer">Edit answer</span>
+      </div>
+      <div class="dialog-body" style="opacity:0.65; font-size:12.5px; margin-top:10px;" data-i18n="guided.sayAloud">Now say your answer aloud.</div>
+      <span class="btn btn-primary btn-block" id="btn-free-repeated" style="margin-top:8px;" data-i18n="guided.repeated">I repeated it →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ GENERIC CONFIRM OVERLAY (v0.13) ═══════════════
+     The WebView shell has no WebChromeClient, so a plain JS confirm()
+     never shows a dialog (silently no-ops) — used for anything destructive
+     (currently: Reset Learning Data). -->
+<div class="dialog-backdrop" id="confirm-overlay" hidden>
+  <div class="dialog">
+    <div class="dialog-body" id="confirm-message" style="opacity:1;"></div>
+    <div class="dialog-actions">
+      <span class="btn btn-secondary" id="btn-confirm-cancel" data-i18n="common.cancel">Cancel</span>
+      <span class="btn btn-primary" id="btn-confirm-ok" data-i18n="common.continue">Continue</span>
+    </div>
+  </div>
+</div>
+
+<!-- App version badge — fixed bottom-right, visible on every screen. -->
+<div id="app-version-badge" style="position:fixed; right:10px; bottom:calc(6px + env(safe-area-inset-bottom)); font-size:10px; opacity:0.4; z-index:60; pointer-events:none; font-family:ui-monospace, monospace;">v0.12</div>
+
+<script src="i18n/en.js"></script>
+<script src="i18n/tr.js"></script>
+<script src="i18n/core.js"></script>
+<script src="phonetic.js"></script>
+<script src="sentences.js"></script>
+<script src="external_sources.js"></script>
+<script src="dict_en_tr.js"></script>
+<script src="word_bubble.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

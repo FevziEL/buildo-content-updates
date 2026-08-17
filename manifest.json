@@ -1,0 +1,62 @@
+{
+  "contentVersion": 1,
+  "minAppVersionCode": 15,
+  "notes": "Initial content-update feed setup - matches the files bundled in Buildo APK versionCode 15 exactly.",
+  "files": [
+    {
+      "path": "app.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/app.js",
+      "sha256": "be3a76fc7b441266e3f838eeca5dff7ce9b6bb9aa582ff3ea31c56023e917b8b"
+    },
+    {
+      "path": "dict_en_tr.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/dict_en_tr.js",
+      "sha256": "56e8dd0666643571145c975fd07a93cd903f953d5cf8808a9be7882c2250c3b9"
+    },
+    {
+      "path": "phonetic.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/phonetic.js",
+      "sha256": "756c5f790cb4e25ae1b647726bd0148f66da0aadbe4fc776a864a8f2a6c46abe"
+    },
+    {
+      "path": "sentences.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/sentences.js",
+      "sha256": "2687d520319cdb32b759ab2a6ce18219dd5b754adcad0dc1bf26bc2f8c5890c6"
+    },
+    {
+      "path": "word_bubble.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/word_bubble.js",
+      "sha256": "3b67fe72eade294e373c41541bfc90cefeb81408ba2a348cb1b81bfb9cf17766"
+    },
+    {
+      "path": "index.html",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/index.html",
+      "sha256": "e524fcfd3be88926bcecc2a0ec2075b4e035b10bec8ce1ef503e310a9ad231b2"
+    },
+    {
+      "path": "modernist.css",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/modernist.css",
+      "sha256": "b6b60ed44a32d100fe8e841d66001df4ebb7fe27c922697d08ee127c2e5d68d3"
+    },
+    {
+      "path": "external_sources.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/external_sources.js",
+      "sha256": "f79db9a3265f8dcd817f471c5d24dd113579ed64e3ac18aa06b3284c2aaf66b6"
+    },
+    {
+      "path": "i18n/en.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/i18n/en.js",
+      "sha256": "011bd3edf3eb7bbef36a4c76349df9c822d7e8b7ecacfa8ac0d5131ef6866532"
+    },
+    {
+      "path": "i18n/tr.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/i18n/tr.js",
+      "sha256": "106ff6c27abb6934c72a9dd99ba3b737d9c2656a9d16a00891abc217a0643109"
+    },
+    {
+      "path": "i18n/core.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/main/i18n/core.js",
+      "sha256": "96995b413783066855b2231298189abbed499dc0d54d65001bdacf3b5e92f042"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.10";
+  var APP_VERSION = "0.14.12";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,16 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.12", notes: [
+        "\"Bizden Gelenler\"e altıncı yazı eklendi: \"Microplastics and Plants: When Pollution Becomes a Biological Signal\" (Part 6). Bu sürüm YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.11'deki WebViewAssetLoader düzeltmesinden sonraki ilk gerçek test."
+      ]
+    },
+    {
+      version: "0.14.11", notes: [
+        "İçerik Güncellemeleri'nin GERÇEK kök nedeni bulundu ve düzeltildi: uygulama şimdiye kadar dosyaları file:///android_asset/ üzerinden yüklüyordu; bu, Android WebView'ın kendi dahili varlık yükleyicisinden geçen özel bir adres ve hiçbir zaman güncelleme mekanizmasının müdahale noktasına (shouldInterceptRequest) hiç uğramıyordu — v0.14.6 ve v0.14.9'daki düzeltmeler doğru ama hiç çalıştırılmayan koda yapılmıştı. Uygulama artık dosyaları WebViewAssetLoader üzerinden, gerçekten müdahale edilebilen bir adresten yüklüyor. Bu sürüm bu yüzden YENİ BİR APK gerektiriyor (native değişiklik) — ama bundan sonraki tüm içerik güncellemeleri artık gerçekten çalışacak."
+      ]
+    },
     {
       version: "0.14.10", notes: [
         "\"Bizden Gelenler\"e beşinci yazı eklendi: \"Microplastics and Plants: The Questions That Remain\" (Part 5). Bu sürüm de YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.9'daki önbellek düzeltmelerinden sonraki ilk gerçek test."

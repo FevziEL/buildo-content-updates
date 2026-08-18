@@ -137,6 +137,29 @@
         "That is where the story becomes much bigger than microplastics.",
         "It becomes a question of the future of agricultural ecosystems."
       ]
+    },
+    {
+      id: "custom_microplastics_and_plants_part6",
+      topic: "cevre",
+      source: "Bizden Gelenler",
+      title: "Microplastics and Plants: When Pollution Becomes a Biological Signal",
+      link: "",
+      pubDate: "2026-08-18T06:00:00Z",
+      image: "",
+      bodyParagraphs: [
+        "Part 6 — The Plant May Be Responding to More Than Plastic",
+        "When a plant encounters microplastics, the most obvious assumption is that the particle itself is responsible for the resulting stress. However, emerging research suggests that this interpretation may be incomplete.",
+        "Microplastics can behave as mobile surfaces within the environment. Their physicochemical properties allow them to interact with metals, pesticides, pharmaceuticals, and naturally occurring organic compounds. As a result, a plant exposed to plastic particles may actually experience a combined chemical challenge rather than a purely physical one.",
+        "This becomes particularly important in agricultural environments. A weathered plastic particle is very different from a freshly manufactured laboratory particle. Sunlight, oxygen, mechanical abrasion, and microorganisms can alter its surface, producing new functional groups and increasing its capacity to interact with surrounding contaminants.",
+        "The plant therefore encounters not simply \"plastic\", but a chemically modified particle carrying an environmental history.",
+        "Recent studies have also begun to reveal how strongly plant responses depend on context. Salinity, drought, temperature, nutrient availability, and the composition of the surrounding soil can all modify the biological effects of microplastics. A particle that produces a relatively mild response under optimal conditions may become considerably more disruptive when the plant is already under environmental stress.",
+        "This suggests that microplastics may function less like a single conventional toxicant and more like a stress amplifier.",
+        "That concept could become one of the most important ideas in the field.",
+        "The future of microplastic research may therefore depend on studying plants under realistic combinations of stresses rather than exposing them to isolated particles in simplified laboratory systems.",
+        "After all, crops do not grow in laboratory conditions.",
+        "They grow in ecosystems.",
+        "And that is where the true biological story of microplastics is only beginning."
+      ]
     }
   ];
 

@@ -734,6 +734,12 @@
     <div style="margin-top:8px;">
       <span class="source-link" id="btn-reset-update" style="cursor:pointer; display:none;" data-i18n="settings.contentUpdates.revert">Revert to bundled version ↺</span>
     </div>
+    <!-- Debug diagnostics — shows exactly what shouldInterceptRequest saw on
+         THIS running page load (which JS/HTML file it's actually serving
+         each asset from, right now, in real time). Ordinary users never
+         need this; it exists to make "update reports success but nothing
+         changes" debuggable from screenshots alone, no adb required. -->
+    <div id="content-update-debug" style="margin-top:10px; font-size:10px; opacity:0.5; font-family:monospace; white-space:pre-wrap; word-break:break-all;"></div>
 
     <!-- Data — v0.13 (change list §17/§18/§19): local-only export/import
          backup, a data schema version, and a visible storage-usage figure.

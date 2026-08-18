@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.14";
+  var APP_VERSION = "0.14.15";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.15", notes: [
+        "Otomatik güncelleme kontrolündeki gerçek bir hata düzeltildi: açılış ekranı, arka plandaki güncelleme kontrolü henüz bitmemişken zaman aşımına uğrarsa, o kontrolü tamamlanmadan kesip atıyordu (bu yüzden yavaş/kesintili bağlantılarda otomatik kontrol sessizce hiç sonuçlanmıyordu ama Ayarlar'daki manuel buton -ki böyle bir zaman sınırı yok- sorunsuz çalışıyordu). Artık arka plandaki kontrol, açılış ekranı kapansa bile kesintiye uğramadan tamamlanana kadar çalışmaya devam ediyor."
+      ]
+    },
     {
       version: "0.14.14", notes: [
         "\"Bizden Gelenler\"e yedinci yazı eklendi: \"Microplastics and Plants: The Root Has a Story to Tell\" (Part 7). Bu sürüm YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.13'teki otomatik güncelleme kontrolü ve bildirim zilinin ilk gerçek testi."

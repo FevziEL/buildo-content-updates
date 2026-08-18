@@ -186,6 +186,30 @@
         "It may be the place where the plant first decides how to respond.",
         "And perhaps the most important question for future research is no longer how much plastic enters the plant, but what the plant does when it encounters it."
       ]
+    },
+    {
+      id: "custom_microplastics_and_plants_part8",
+      topic: "cevre",
+      source: "Bizden Gelenler",
+      title: "Microplastics and Plants: The Unexpected Role of Root Injuries",
+      link: "",
+      pubDate: "2026-08-18T18:00:00Z",
+      image: "",
+      bodyParagraphs: [
+        "Part 8 — A Small Wound Could Change Everything",
+        "One of the most interesting developments in plant–microplastic research has emerged from an apparently simple question: what happens when a plant root is damaged?",
+        "Roots are not static structures. In agricultural soils, they can be injured by insects, mechanical disturbance, transplantation, soil compaction, cultivation practices, or the natural formation of lateral roots. Until recently, it was unclear whether these injuries could substantially alter the movement of plastic particles into plants.",
+        "A study published in Nature Communications in March 2026 suggests that they can.",
+        "Researchers found that intact and superficially wounded roots of maize and taro remained relatively effective barriers against microplastic penetration. Deep wounds that reached the vascular cylinder, however, created a direct pathway into xylem vessels. Once inside these exposed vessels, microplastics could move rapidly upward through the plant.",
+        "The finding is important because it introduces a variable that is often absent from controlled laboratory experiments: plant history.",
+        "Two plants growing in the same contaminated soil may experience different levels of internal plastic exposure simply because one has damaged roots and the other does not.",
+        "Even more interestingly, another 2026 study using wheat and tomato demonstrated that the environmental history of the plastic particle itself can also determine uptake. Pristine nanoplastics of approximately 400 nm were not detected inside the plants under the tested conditions, whereas aged particles were absorbed and, in tomato, could reach the vascular system of leaves.",
+        "The implications are beginning to converge.",
+        "Plant condition matters. Particle condition matters. And environmental context matters.",
+        "This may explain why microplastic experiments performed under highly controlled conditions sometimes produce remarkably different outcomes.",
+        "The future of this field may therefore require a new experimental philosophy: instead of asking only whether microplastics can enter a healthy plant, researchers may need to ask how stress, ageing, injury, and environmental history together determine the fate of plastic particles inside crops.",
+        "That is a much more realistic—and considerably more complicated—picture of plastic pollution in agriculture."
+      ]
     }
   ];
 

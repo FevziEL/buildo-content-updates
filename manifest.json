@@ -1,66 +1,66 @@
 {
-  "contentVersion": 13,
+  "contentVersion": 14,
   "minAppVersionCode": 20,
-  "notes": "v0.14.15: APP_VERSION sync for the SplashActivity shutdown fix (real fix is native-only, shipped as versionCode 22 — see the app for details).",
+  "notes": "v0.14.16: Bizden Gelenler Part 8 (\"The Unexpected Role of Root Injuries\"). First real test of v0.14.15's SplashActivity shutdown fix for the automatic update check.",
   "files": [
     {
       "path": "app.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/app.js",
-      "sha256": "6ae57600cf9f09fa3a74d4958b1d8b632797daae05a833124380f54a14525fe1"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/app.js",
+      "sha256": "5cb483363d1bb60b68e15c464ee84329526327bf666826f99c6e63bbf08fffb7"
     },
     {
       "path": "dict_en_tr.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/dict_en_tr.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/dict_en_tr.js",
       "sha256": "9b0f1a4b3cb37bf5b49ef334d4c95e769475e234d47675eb33a4ae45457083b7"
     },
     {
       "path": "phonetic.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/phonetic.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/phonetic.js",
       "sha256": "756c5f790cb4e25ae1b647726bd0148f66da0aadbe4fc776a864a8f2a6c46abe"
     },
     {
       "path": "sentences.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/sentences.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/sentences.js",
       "sha256": "2687d520319cdb32b759ab2a6ce18219dd5b754adcad0dc1bf26bc2f8c5890c6"
     },
     {
       "path": "word_bubble.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/word_bubble.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/word_bubble.js",
       "sha256": "3b67fe72eade294e373c41541bfc90cefeb81408ba2a348cb1b81bfb9cf17766"
     },
     {
       "path": "index.html",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/index.html",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/index.html",
       "sha256": "4dbab399228e4ad5028d0c40c25df119e39eef26cb3dd449d51f435558c5fb8e"
     },
     {
       "path": "modernist.css",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/modernist.css",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/modernist.css",
       "sha256": "b6b60ed44a32d100fe8e841d66001df4ebb7fe27c922697d08ee127c2e5d68d3"
     },
     {
       "path": "external_sources.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/external_sources.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/external_sources.js",
       "sha256": "f79db9a3265f8dcd817f471c5d24dd113579ed64e3ac18aa06b3284c2aaf66b6"
     },
     {
       "path": "custom_articles.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/custom_articles.js",
-      "sha256": "573c07dbe50281d8d690731621cbb594ed792475537d4d5cc85ce9562c96ff58"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/custom_articles.js",
+      "sha256": "717d62b4801209e59f727d2a95a7a18207447a8e5279b8e6038cb0df987d6b10"
     },
     {
       "path": "i18n/en.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/i18n/en.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/i18n/en.js",
       "sha256": "f96bba9494a1efbe9e7c6d73a62a7369e8262cd75dcb41afecfc4ae5daf2c655"
     },
     {
       "path": "i18n/tr.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/i18n/tr.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/i18n/tr.js",
       "sha256": "75c35d07413d8549b604b4e05f80d8649c7167d54ae25cb3a82e6b04b73ed9b2"
     },
     {
       "path": "i18n/core.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/477efe8f743d65a743a041657121c5ce275ecb66/i18n/core.js",
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/a5e6183b3562acee156859c164512c633963770f/i18n/core.js",
       "sha256": "96995b413783066855b2231298189abbed499dc0d54d65001bdacf3b5e92f042"
     }
   ]

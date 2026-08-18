@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.13";
+  var APP_VERSION = "0.14.14";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.14", notes: [
+        "\"Bizden Gelenler\"e yedinci yazı eklendi: \"Microplastics and Plants: The Root Has a Story to Tell\" (Part 7). Bu sürüm YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.13'teki otomatik güncelleme kontrolü ve bildirim zilinin ilk gerçek testi."
+      ]
+    },
     {
       version: "0.14.13", notes: [
         "İçerik güncellemeleri artık otomatik: uygulama her açılışta arka planda kendiliğinden kontrol edip uyguluyor, \"Güncellemeleri Kontrol Et\"e basmaya gerek yok (buton yine de Ayarlar'da duruyor, isteyen anlık sonuç görebilir). Ana ekranın sağ üstüne bir bildirim zili eklendi — \"Bizden Gelenler\"e yeni gelen yazılar orada rozetle gösteriliyor, dokunulunca liste açılıyor ve bir yazıya dokunmak onu doğrudan açıyor. Ayrıca ilk açılışı yavaşlatabilen Safe Browsing kontrolü bu WebView için kapatıldı."

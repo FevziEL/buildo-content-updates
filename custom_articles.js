@@ -160,6 +160,32 @@
         "They grow in ecosystems.",
         "And that is where the true biological story of microplastics is only beginning."
       ]
+    },
+    {
+      id: "custom_microplastics_and_plants_part7",
+      topic: "cevre",
+      source: "Bizden Gelenler",
+      title: "Microplastics and Plants: The Root Has a Story to Tell",
+      link: "",
+      pubDate: "2026-08-18T12:00:00Z",
+      image: "",
+      bodyParagraphs: [
+        "Part 7 — What Happens at the Root–Soil Interface?",
+        "The most revealing place to study the interaction between plants and microplastics may be the few millimetres of soil immediately surrounding a root.",
+        "This narrow zone is where plastic particles encounter root exudates, microorganisms, mineral surfaces and water simultaneously. It is also where the plant continuously modifies its environment. Recent research suggests that the consequences of microplastic exposure can therefore begin before particles ever reach the interior of the plant.",
+        "A 2026 study investigating crops exposed to microplastics ranging from 0.5 to 5 μm found that particle behaviour was strongly dependent on root anatomy. Some particles penetrated seedling root tissues, whereas mature root structures could act as effective barriers to vascular transport. Interestingly, this did not necessarily prevent accumulation: instead, particles could become concentrated in outer root tissues over prolonged exposure.",
+        "This finding challenges a common assumption that uptake and accumulation always lead to systemic transport.",
+        "They do not.",
+        "A plant can effectively trap particles at its external barriers.",
+        "But another recent study offers a more complex picture. In tobacco, researchers found that different plastic structures followed different entry routes. Polystyrene microspheres preferentially entered through the root apex and lateral-root initiation sites, while polyacrylonitrile microfibres behaved differently and remained associated with intercellular spaces. Their physiological effects also differed substantially.",
+        "The message is increasingly clear: there is no single \"microplastic–root interaction.\"",
+        "Particle size, morphology and polymer chemistry can determine where the particle enters, how far it travels and how strongly the plant responds.",
+        "And the consequences may eventually extend beyond the root itself.",
+        "Recent research has connected microplastic exposure with changes in nitrogen and carbon metabolism, hormone signalling, photosynthesis and antioxidant activity.",
+        "The root, therefore, may not simply be the first organ exposed to microplastics.",
+        "It may be the place where the plant first decides how to respond.",
+        "And perhaps the most important question for future research is no longer how much plastic enters the plant, but what the plant does when it encounters it."
+      ]
     }
   ];
 

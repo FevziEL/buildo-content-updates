@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.16";
+  var APP_VERSION = "0.14.17";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.17", notes: [
+        "Türkçe çeviri sözlüğü 326 yeni kelime/ifadeyle genişletildi (2.324 → 2.650) — bitki biyolojisi/mikroplastik, iklim/çevre, halk sağlığı, uzay/astronomi, araştırma yöntembilimi, hukuk/politika, yer bilimi ve kimya/fizik alanlarından, uygulamanın gerçek kaynaklarında sık geçen kelimeler. Bu güncelleme de YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi."
+      ]
+    },
     {
       version: "0.14.16", notes: [
         "\"Bizden Gelenler\"e sekizinci yazı eklendi: \"Microplastics and Plants: The Unexpected Role of Root Injuries\" (Part 8). Bu sürüm YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.15'teki otomatik güncelleme düzeltmesinin ilk gerçek testi."

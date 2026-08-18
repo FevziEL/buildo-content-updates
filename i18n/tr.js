@@ -27,6 +27,7 @@
     "nav.vocab": "Kelime Hazinem",
     "nav.progress": "İlerleme",
     "nav.search": "Ara",
+    "nav.notifications": "Bildirimler",
     "nav.settings": "Ayarlar",
 
     "home.greeting.morning": "Günaydın",
@@ -46,6 +47,8 @@
     "home.secondary.progress": "İlerleme",
     "home.secondary.external": "Dış Kaynak Okuma",
     "home.secondary.custom": "Bizden Gelenler",
+    "notifications.title": "Yeni Yazılar",
+    "notifications.empty": "Şu an yeni bir şey yok.",
     "custom.title": "Bizden Gelenler",
     "custom.subtitle": "Buildo okuyucuları için yazılmış özgün yazılar.",
     "custom.empty": "Henüz burada bir yazı yok.",

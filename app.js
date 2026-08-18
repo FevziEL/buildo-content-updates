@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.12";
+  var APP_VERSION = "0.14.13";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.13", notes: [
+        "İçerik güncellemeleri artık otomatik: uygulama her açılışta arka planda kendiliğinden kontrol edip uyguluyor, \"Güncellemeleri Kontrol Et\"e basmaya gerek yok (buton yine de Ayarlar'da duruyor, isteyen anlık sonuç görebilir). Ana ekranın sağ üstüne bir bildirim zili eklendi — \"Bizden Gelenler\"e yeni gelen yazılar orada rozetle gösteriliyor, dokunulunca liste açılıyor ve bir yazıya dokunmak onu doğrudan açıyor. Ayrıca ilk açılışı yavaşlatabilen Safe Browsing kontrolü bu WebView için kapatıldı."
+      ]
+    },
     {
       version: "0.14.12", notes: [
         "\"Bizden Gelenler\"e altıncı yazı eklendi: \"Microplastics and Plants: When Pollution Becomes a Biological Signal\" (Part 6). Bu sürüm YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.11'deki WebViewAssetLoader düzeltmesinden sonraki ilk gerçek test."
@@ -970,6 +975,59 @@
   var CUSTOM_ARTICLES_BY_ID = {};
   CUSTOM_ARTICLES.forEach(function (a) { CUSTOM_ARTICLES_BY_ID[a.id] = a; });
 
+  // ════════════════════════════════════════════════════════════════════════
+  // Notifications bell (2026-08-18) — surfaces newly arrived "Bizden
+  // Gelenler" pieces without the reader needing to remember to open that
+  // list themselves. "New" is deliberately not a separate tracked flag: a
+  // piece counts as new for as long as it has no K.progress entry, and
+  // opening it (openArticleObject -> saveProgress touches lastOpened even
+  // before any real progress is made) is what naturally clears it — the
+  // exact same "opened" signal every other read/unread indicator in the
+  // app already relies on (see the done-check mark in articleRowHtml).
+  // ════════════════════════════════════════════════════════════════════════
+  function getNewCustomArticles() {
+    var progressMap = Store.get(K.progress, {});
+    return CUSTOM_ARTICLES.filter(function (a) { return !progressMap[a.id]; });
+  }
+  function renderNotifications() {
+    var items = getNewCustomArticles();
+    var badge = document.getElementById("notif-badge");
+    if (badge) {
+      badge.hidden = items.length === 0;
+      badge.textContent = items.length > 9 ? "9+" : String(items.length);
+    }
+    var listEl = document.getElementById("notifications-list");
+    var emptyEl = document.getElementById("notifications-empty");
+    if (!listEl) return;
+    listEl.innerHTML = "";
+    if (items.length === 0) {
+      if (emptyEl) emptyEl.hidden = false;
+      return;
+    }
+    if (emptyEl) emptyEl.hidden = true;
+    items.forEach(function (a) {
+      var row = document.createElement("div");
+      row.className = "article-row";
+      row.innerHTML = articleRowHtml(a);
+      bindArticleRow(row, a); // real click behavior: opens the article via openArticleObject
+      row.addEventListener("click", function (e) {
+        if (e.target.closest(".save-star")) return;
+        document.getElementById("notifications-overlay").hidden = true;
+      });
+      listEl.appendChild(row);
+    });
+  }
+  document.getElementById("btn-notifications").addEventListener("click", function () {
+    renderNotifications();
+    document.getElementById("notifications-overlay").hidden = false;
+  });
+  document.getElementById("btn-notifications-close").addEventListener("click", function () {
+    document.getElementById("notifications-overlay").hidden = true;
+  });
+  document.getElementById("notifications-overlay").addEventListener("click", function (e) {
+    if (e.target.id === "notifications-overlay") document.getElementById("notifications-overlay").hidden = true;
+  });
+
   function buildFactSheet(title, paragraphs) {
     var text = (title + " " + paragraphs.join(" ")).trim();
     return {
@@ -1607,6 +1665,7 @@
   function renderHomeSections() {
     document.getElementById("greeting-text").innerHTML = greetingText();
     renderTodayScience();
+    renderNotifications();
   }
 
   // ════════════════════════════════════════════════════════════════════════

@@ -27,6 +27,7 @@
     "nav.vocab": "My Vocabulary",
     "nav.progress": "Progress",
     "nav.search": "Search",
+    "nav.notifications": "Notifications",
     "nav.settings": "Settings",
 
     "home.greeting.morning": "Good morning",
@@ -46,6 +47,8 @@
     "home.secondary.progress": "Progress",
     "home.secondary.external": "External Reading",
     "home.secondary.custom": "From Us",
+    "notifications.title": "New Pieces",
+    "notifications.empty": "Nothing new right now.",
     "custom.title": "From Us",
     "custom.subtitle": "Original pieces written for Buildo readers.",
     "custom.empty": "No pieces here yet.",

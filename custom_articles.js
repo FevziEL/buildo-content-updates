@@ -116,6 +116,27 @@
         "It is increasingly becoming a question of plant–soil–microbe interactions.",
         "That shift could fundamentally change how environmental phytotoxicity is studied."
       ]
+    },
+    {
+      id: "custom_microplastics_and_plants_part5",
+      topic: "cevre",
+      source: "Bizden Gelenler",
+      title: "Microplastics and Plants: The Questions That Remain",
+      link: "",
+      pubDate: "2026-08-18T00:00:00Z",
+      image: "",
+      bodyParagraphs: [
+        "Part 5 — From Plastic Pollution to Food Security",
+        "The possibility that microplastics can enter edible plant tissues has naturally attracted enormous attention. Lettuce, wheat, carrot, and other crops have already been investigated for particle uptake and translocation.",
+        "Yet one important scientific caution remains.",
+        "Detecting plastic-associated signals inside a plant is not the same as demonstrating that intact particles have crossed every biological barrier. Fluorescent labelling, particle aggregation, sample preparation, and imaging artefacts can complicate interpretation. Researchers are therefore increasingly combining microscopy with spectroscopic and chemically specific analytical techniques.",
+        "At the same time, laboratory studies often use pristine spherical particles at relatively high concentrations. Environmental plastics are much more complicated. They are weathered, irregularly shaped, chemically heterogeneous, and frequently covered with microorganisms or associated contaminants such as metals and pesticides.",
+        "This is why the next generation of research will need to move from simple laboratory exposure experiments toward environmentally realistic systems.",
+        "The real question is not whether one particular plastic particle can enter a plant.",
+        "The real question is how continuous exposure to a complex mixture of aged microplastics and nanoplastics will influence crop productivity, plant–microbe interactions, contaminant accumulation, and ultimately food quality.",
+        "That is where the story becomes much bigger than microplastics.",
+        "It becomes a question of the future of agricultural ecosystems."
+      ]
     }
   ];
 

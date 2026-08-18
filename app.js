@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.8";
+  var APP_VERSION = "0.14.10";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,16 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.10", notes: [
+        "\"Bizden Gelenler\"e beşinci yazı eklendi: \"Microplastics and Plants: The Questions That Remain\" (Part 5). Bu sürüm de YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.9'daki önbellek düzeltmelerinden sonraki ilk gerçek test."
+      ]
+    },
+    {
+      version: "0.14.9", notes: [
+        "İçerik Güncellemeleri: v0.14.6'daki düzeltmeden sonra bile sürüm 8 (Part 4) güncellemesi indirilip doğrulanmasına rağmen ekrana yansımadı. Olası nedenler tek tek kapatıldı: WebView'ın kendi önbelleği artık file:///android_asset/ istekleri için tamamen devre dışı (LOAD_NO_CACHE + clearCache), sunulan her güncellenmiş dosyaya no-cache başlıkları eklendi, ve Ayarlar ekranına gerçek zamanlı bir teşhis satırı eklendi (hangi dosyanın nereden sunulduğunu ve şu an çalışan gerçek sürümü gösteriyor) — böylece bir dahaki denemede tahmin değil, gerçek kanıt görülecek."
+      ]
+    },
     {
       version: "0.14.8", notes: [
         "\"Bizden Gelenler\"e dördüncü yazı eklendi: \"Microplastics and Plants: The Rhizosphere Connection\" (Part 4). Bu sürüm de YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi — v0.14.6'daki düzeltmeden sonraki ikinci gerçek uçtan uca doğrulama."
@@ -3122,10 +3132,12 @@
     var statusEl = document.getElementById("content-update-status");
     var checkedEl = document.getElementById("content-update-checked");
     var resetBtn = document.getElementById("btn-reset-update");
+    var debugEl = document.getElementById("content-update-debug");
     if (!window.AndroidUpdate || !window.AndroidUpdate.getInfo) {
       statusEl.textContent = t("settings.contentUpdates.previewOnly");
       checkedEl.textContent = "";
       resetBtn.style.display = "none";
+      if (debugEl) debugEl.textContent = "";
       return;
     }
     var info;
@@ -3135,6 +3147,20 @@
       : t("settings.contentUpdates.bundled");
     checkedEl.textContent = formatUpdateCheckedAt(info.checkedAt);
     resetBtn.style.display = info.active ? "" : "none";
+    // Debug breadcrumb (added while chasing the "reports success but the
+    // app doesn't visibly change" bug, 2026-08-17): shows, from THIS running
+    // page load, what shouldInterceptRequest actually decided the last time
+    // it ran, and — critically — the live APP_VERSION this exact JS file
+    // declares. If a real override is being served, these two lines and the
+    // bottom-right badge must all agree with the manifest's version. If
+    // they don't, this text tells us where the chain actually breaks
+    // without needing adb/logcat from the user's phone.
+    if (debugEl) {
+      debugEl.textContent =
+        "runningAppVersion=" + APP_VERSION +
+        "\ninterceptCount=" + info.interceptCount +
+        "\nlastIntercept=" + info.lastIntercept;
+    }
   }
   document.getElementById("btn-check-update").addEventListener("click", function () {
     var t = window.I18N.t;

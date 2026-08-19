@@ -1,17 +1,17 @@
 {
-  "contentVersion": 18,
+  "contentVersion": 19,
   "minAppVersionCode": 20,
-  "notes": "v0.14.20: Editorial/reading-first UI reskin (warm paper palette, serif headings + article body, sans UI chrome, rule-separated Today's Science list, toned-down streak strip). Content-update-safe part; the signed release build + status bar fix ship separately as versionCode 25.",
+  "notes": "v0.14.20: dictionary growth batch (+214 entries, 2,916 -> 3,130), on top of the editorial UI reskin pushed just before this.",
   "files": [
     {
       "path": "app.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/f298a5db819713b6c1fc2dead0649ba57fb50b33/app.js",
-      "sha256": "0a69e4ffbf0ad5c3c5c0af623d0bd75661485e31e0fd42c917780dd6f3128b03"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/218f2e4b9c5fe806e52f80e74c92e10d2b500ef4/app.js",
+      "sha256": "bc67092de7c7e44ebf75664d4d4263c1205a6931c22620eec354b2e39f294c52"
     },
     {
       "path": "dict_en_tr.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/b4328893f0febc1c6343305f397a797634dd1274/dict_en_tr.js",
-      "sha256": "d410f810668b8bf55eb165ba207e7a44dde215914a4bef5a1238aec1eade0008"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/218f2e4b9c5fe806e52f80e74c92e10d2b500ef4/dict_en_tr.js",
+      "sha256": "01dc655acf9b897fc3b815c1733c9812a8af2ac3dfe92da2e954c14ca2f859d9"
     },
     {
       "path": "phonetic.js",

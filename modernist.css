@@ -1,47 +1,62 @@
 /* Modernist — design-system tokens and component classes. This file is the source of truth for the system's look; retune it here and see readme.md. */
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap');
+/* "Editorial / Reading-first" reskin (2026-08-19, user-approved concept A
+   of two alternative directions shown as mockups): warm paper background,
+   a muted terracotta accent instead of bright coral, a serif for
+   headlines AND the actual article reading content (--font-reading below
+   — the point of an editorial reading app is that the thing you spend the
+   most time looking at, the article text itself, gets the "book" font),
+   clean sans reserved for UI chrome (buttons/nav/labels) so small
+   interactive text stays legible. Every token below cascades through the
+   whole app via the existing component classes (.btn/.tag/.dialog/card-
+   title/h1-h6) — see the individual component tweaks further down for the
+   few places that needed a direct touch instead of just inheriting. */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700;8..60,800&family=Source+Sans+3:wght@400;500;600&display=swap');
 
 :root {
-  --color-bg: #f3f2f2;
-  --color-surface: #eae9e9;
-  --color-text: #201e1d;
-  --color-accent: #ec3013;
-  --color-accent-2: #e15b47;
-  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --color-bg: #f7f3ec;
+  --color-surface: #eee7d6;
+  --color-text: #2b2620;
+  --color-accent: #b5482e;
+  --color-accent-2: #8a6b4a;
+  --color-divider: color-mix(in srgb, #2b2620 25%, transparent);
 
-  --color-neutral-100: #f8f4f4;
-  --color-neutral-200: #eae7e7;
-  --color-neutral-300: #d7d3d3;
-  --color-neutral-400: #bab6b6;
-  --color-neutral-500: #9b9797;
-  --color-neutral-600: #7d7979;
-  --color-neutral-700: #605d5d;
-  --color-neutral-800: #444141;
-  --color-neutral-900: #2d2b2b;
+  --color-neutral-100: #f3ede0;
+  --color-neutral-200: #e8dfcc;
+  --color-neutral-300: #d8cbb0;
+  --color-neutral-400: #c2b196;
+  --color-neutral-500: #a3907a;
+  --color-neutral-600: #83715d;
+  --color-neutral-700: #665a48;
+  --color-neutral-800: #453d32;
+  --color-neutral-900: #2b2620;
 
-  --color-accent-100: #fff2ef;
-  --color-accent-200: #ffe0d9;
-  --color-accent-300: #ffc4b8;
-  --color-accent-400: #ff9783;
-  --color-accent-500: #ff563c;
-  --color-accent-600: #dd2b0f;
-  --color-accent-700: #ae1800;
-  --color-accent-800: #7c1405;
-  --color-accent-900: #4d170e;
+  --color-accent-100: #fbeeea;
+  --color-accent-200: #f4d6cb;
+  --color-accent-300: #e9b49e;
+  --color-accent-400: #d68767;
+  --color-accent-500: #c05f3f;
+  --color-accent-600: #a8432a;
+  --color-accent-700: #86341f;
+  --color-accent-800: #642616;
+  --color-accent-900: #42190e;
 
-  --color-accent-2-100: #fff2ef;
-  --color-accent-2-200: #ffe0da;
-  --color-accent-2-300: #ffc4b9;
-  --color-accent-2-400: #ff9784;
-  --color-accent-2-500: #ef6853;
-  --color-accent-2-600: #c94b39;
-  --color-accent-2-700: #9e3526;
-  --color-accent-2-800: #71261b;
-  --color-accent-2-900: #471d16;
+  --color-accent-2-100: #f5eee6;
+  --color-accent-2-200: #e6d5c2;
+  --color-accent-2-300: #d1b594;
+  --color-accent-2-400: #b08f68;
+  --color-accent-2-500: #8a6b4a;
+  --color-accent-2-600: #6e5439;
+  --color-accent-2-700: #54402c;
+  --color-accent-2-800: #3b2d1f;
+  --color-accent-2-900: #241c14;
 
-  --font-heading: "Archivo", system-ui, sans-serif;
-  --font-heading-weight: 800;
-  --font-body: "Archivo", system-ui, sans-serif;
+  --font-heading: "Source Serif 4", Georgia, serif;
+  --font-heading-weight: 500;
+  --font-body: "Source Sans 3", system-ui, sans-serif;
+  /* Used specifically for the article reading experience (see the Detail
+     screen's body-copy rules) — same family as headings, kept as its own
+     token so the reading experience can be tuned independently later. */
+  --font-reading: "Source Serif 4", Georgia, serif;
 
   --space-1: 4.0px;
   --space-2: 8.0px;
@@ -59,9 +74,9 @@
   --radius-md: 12px;
   --radius-lg: 20px;
 
-  --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b2b 14%, transparent);
-  --shadow-md: 0 3px 10px color-mix(in srgb, #2d2b2b 16%, transparent);
-  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2b2620 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2b2620 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2b2620 22%, transparent);
 }
 
 body {
@@ -76,8 +91,11 @@ h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: var(--font-headi
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 400; }
 h1, h2, h3, h4, h5, h6 {
+  /* Line-height/tracking loosened for the serif reskin (2026-08-19) — the
+     old -0.015em tight tracking + 1.12 line-height were tuned for the
+     previous bold geometric sans (Archivo) and cramp a serif face. */
   font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+  line-height: 1.25; letter-spacing: -0.005em; margin: 0 0 var(--space-2);
 }
 h1 { font-size: 42px; }
 h2 { font-size: 32px; }
@@ -107,7 +125,11 @@ figcaption {
 .btn {
   align-items: center; justify-content: center; gap: 6px;
   cursor: pointer; text-decoration: none;
-  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  /* Sans, not serif (2026-08-19 editorial reskin) — buttons are UI
+     chrome, not editorial content; a thin/medium serif at button sizes
+     reads worse than the previous bold Archivo did, so buttons
+     deliberately opt out of --font-heading here. */
+  font-family: var(--font-body); font-weight: 600;
   font-size: 14px; line-height: 1.2; color: var(--color-text);
   background: transparent; border: 1px solid transparent;
   padding: var(--space-2) calc(var(--space-3) * 1.2);

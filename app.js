@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.19";
+  var APP_VERSION = "0.14.20";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.20", notes: [
+        "Arayüz baştan aşağı yenilendi — \"Editoryal / Okuma öncelikli\" tasarım: sıcak kağıt tonu zemin, kırmızının yerine daha sakin bir kiremit/toprak rengi vurgu, başlıklarda ve gerçek makale metninde serif (kitap/dergi hissi veren) bir yazı tipi, arayüz butonlarında ise okunaklı bir sans yazı tipi. Bugünkü Bilim kartları artık çizgiyle ayrılmış sade bir liste (her kartın kendi kutusu yerine), her kartın üst etiketi artık gerçek konuyu gösteriyor (\"Uzay\", \"Çevre\" gibi). Seri kartı daha sakin, ince bir şeride dönüştürüldü. Koyu tema de aynı sıcak tonlarla yeniden ayarlandı."
+      ]
+    },
     {
       version: "0.14.19", notes: [
         "Durum çubuğu (üstte saat/bildirim/pil ikonlarının olduğu şerit) artık uygulamanın kendi açık/koyu tema seçiminize gerçekten uyuyor — daha önce telefonun genel sistem temasını takip ediyordu, uygulama içindeki tema ile alakasız kalabiliyordu; bu yüzden açık modda ikonlar bazen görünmüyordu, koyu moda geçince de üst şerit koyulaşmıyordu. Ayrıca uygulama artık imzalı, küçültülmüş (R8) bir \"release\" derlemesiyle dağıtılıyor — geliştirme/hata ayıklama amaçlı \"debug\" derlemesi yerine, gerçek bir imza anahtarıyla imzalanmış, daha güvenli ve daha küçük boyutlu bir APK."
@@ -1691,10 +1696,16 @@
     var t = (window.I18N && window.I18N.t) || function (k) { return k; };
     var saved = isSaved(a.id);
     var thumb = a.image ? '<img class="real-thumb grayscale" src="' + a.image + '" alt="">' : "FOTO";
+    // Eyebrow shows the real topic (editorial reskin, 2026-08-19) instead
+    // of a "recommended/continuing" status word — "continuing" is now
+    // signaled purely visually via the .continuing left-border accent (see
+    // index.html), which frees this line up for a genuinely informative
+    // category label, the way real editorial apps use it.
+    var eyebrow = topicLabel(a.topic) + (isContinuing ? " · " + t("home.todaysScience.continuing") : "");
     return (
       '<div class="ts-thumb stripe-ph' + (a.image ? "" : " grayscale") + '">' + thumb + "</div>" +
       '<div class="ts-body">' +
-        '<div class="ts-eyebrow">' + (isContinuing ? escapeHtml(t("home.todaysScience.continuing")) : escapeHtml(t("home.todaysScience.recommended"))) + "</div>" +
+        '<div class="ts-eyebrow">' + escapeHtml(eyebrow) + "</div>" +
         '<div class="ts-title">' + escapeHtml(a.title) + "</div>" +
         '<div class="ts-meta"><span>' + escapeHtml(a.source) + "</span><span>·</span><span>" + formatReadTime(a.readTime) +
           (a.preferred ? '</span><span>·</span><span>' + escapeHtml(t("browse.preferred")) : "") + "</span></div>" +

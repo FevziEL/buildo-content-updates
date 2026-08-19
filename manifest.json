@@ -1,12 +1,12 @@
 {
-  "contentVersion": 17,
+  "contentVersion": 18,
   "minAppVersionCode": 20,
-  "notes": "v0.14.19: status bar theme sync call added to applyTheme() (content-safe part). The real status bar fix + signed release build are native-only, shipped separately as versionCode 24.",
+  "notes": "v0.14.20: Editorial/reading-first UI reskin (warm paper palette, serif headings + article body, sans UI chrome, rule-separated Today's Science list, toned-down streak strip). Content-update-safe part; the signed release build + status bar fix ship separately as versionCode 25.",
   "files": [
     {
       "path": "app.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/98c57ffebf54c8c82be22dff5561f8205917166a/app.js",
-      "sha256": "cdfb39ab26e2d10609a377c13307b3b83cb23058771137b473b4727b103bb4ab"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/f298a5db819713b6c1fc2dead0649ba57fb50b33/app.js",
+      "sha256": "0a69e4ffbf0ad5c3c5c0af623d0bd75661485e31e0fd42c917780dd6f3128b03"
     },
     {
       "path": "dict_en_tr.js",
@@ -30,13 +30,13 @@
     },
     {
       "path": "index.html",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/b4328893f0febc1c6343305f397a797634dd1274/index.html",
-      "sha256": "c0eadb6fb7c9befdfcbb7b75fdf74848950e932fb5f0339aa32cb60fb8b2d44f"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/f298a5db819713b6c1fc2dead0649ba57fb50b33/index.html",
+      "sha256": "fd29f91c9812f3cdd0c1b7f9b6f5a05819dee6ebe455e2a76de70984ee3e0f86"
     },
     {
       "path": "modernist.css",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/b4328893f0febc1c6343305f397a797634dd1274/modernist.css",
-      "sha256": "75623997430a57075341c2ad4eb8b3a64b9e277991eeb9341f2e2042a862b2b5"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/f298a5db819713b6c1fc2dead0649ba57fb50b33/modernist.css",
+      "sha256": "8e403a88547a656d4045976e0625eebda7d732bf9eafe9f1b67f07ac98dd99d9"
     },
     {
       "path": "external_sources.js",

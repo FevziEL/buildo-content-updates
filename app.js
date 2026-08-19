@@ -16,7 +16,7 @@
   var CHANGELOG = [
     {
       version: "0.14.20", notes: [
-        "Arayüz baştan aşağı yenilendi — \"Editoryal / Okuma öncelikli\" tasarım: sıcak kağıt tonu zemin, kırmızının yerine daha sakin bir kiremit/toprak rengi vurgu, başlıklarda ve gerçek makale metninde serif (kitap/dergi hissi veren) bir yazı tipi, arayüz butonlarında ise okunaklı bir sans yazı tipi. Bugünkü Bilim kartları artık çizgiyle ayrılmış sade bir liste (her kartın kendi kutusu yerine), her kartın üst etiketi artık gerçek konuyu gösteriyor (\"Uzay\", \"Çevre\" gibi). Seri kartı daha sakin, ince bir şeride dönüştürüldü. Koyu tema de aynı sıcak tonlarla yeniden ayarlandı."
+        "Arayüz baştan aşağı yenilendi — \"Editoryal / Okuma öncelikli\" tasarım: sıcak kağıt tonu zemin, kırmızının yerine daha sakin bir kiremit/toprak rengi vurgu, başlıklarda ve gerçek makale metninde serif (kitap/dergi hissi veren) bir yazı tipi, arayüz butonlarında ise okunaklı bir sans yazı tipi. Bugünkü Bilim kartları artık çizgiyle ayrılmış sade bir liste (her kartın kendi kutusu yerine), her kartın üst etiketi artık gerçek konuyu gösteriyor (\"Uzay\", \"Çevre\" gibi). Seri kartı daha sakin, ince bir şeride dönüştürüldü. Koyu tema de aynı sıcak tonlarla yeniden ayarlandı. Sözlüğe ayrıca 214 kelime daha eklendi (2.916 → 3.130)."
       ]
     },
     {

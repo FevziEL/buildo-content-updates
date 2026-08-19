@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.17";
+  var APP_VERSION = "0.14.18";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.18", notes: [
+        "Ana ekran ve arayüz yenilendi: alt gezinme çubuğu eklendi (Ana Sayfa/Keşfet/Bizden Gelenler/Kelime/İlerleme), Ana Sayfa'ya günlük seri ve hedef ilerlemesini gösteren bir kart eklendi, kartların köşeleri yumuşatıldı — genel olarak daha modern bir görünüm. Kelime tekrar sistemi gerçek bir aralıklı tekrar (SM-2 tarzı) algoritmasına geçti: artık her doğru bildiğinizde tekrar aralığı gerçekten büyüyor, sabit güne dönmüyor. Günlük seri artık ödüllendiriliyor: 7/30/100 günlük kilometre taşlarında bir \"dondurma\" hakkı kazanıyorsunuz, bu da bir günü kaçırsanız bile seriyi bozmadan köprülüyor. Shadowing modunda artık cümle okunurken o an söylenen kelime ekranda vurgulanıyor. Shadowing'e kendi sesinizi kaydedip orijinaliyle karşılaştırma imkânı eklendi (tamamen cihazda, hiçbir şey yüklenmiyor)."
+      ]
+    },
     {
       version: "0.14.17", notes: [
         "Türkçe çeviri sözlüğü 326 yeni kelime/ifadeyle genişletildi (2.324 → 2.650) — bitki biyolojisi/mikroplastik, iklim/çevre, halk sağlığı, uzay/astronomi, araştırma yöntembilimi, hukuk/politika, yer bilimi ve kimya/fizik alanlarından, uygulamanın gerçek kaynaklarında sık geçen kelimeler. Bu güncelleme de YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi."
@@ -282,11 +287,11 @@
   var K = {
     progress: "shadow_progress",     // { [id]: {sentence1Step,sentence2Step,sentence3Step,completed,shadowingCompleted,lastOpened,snapshot} }
     saved: "shadow_saved",           // { [id]: {savedAt, snapshot} }
-    vocab: "shadow_vocab",           // { [word]: {word,pos,definition,exampleSentence,articleId,articleTitle,savedAt,known,reviewDate,interval} }
+    vocab: "shadow_vocab",           // { [word]: {word,pos,definition,exampleSentence,articleId,articleTitle,savedAt,known,reviewDate,interval,easeFactor,repetitions} } — easeFactor/repetitions added v0.14.18 (real SM-2 rewrite), missing on older records, always read with a safe fallback (see reviewWord)
     daily: "shadow_daily",           // { date, articles:[ids], sentences, minutes }
     history: "shadow_history",       // { [date]: {articles, sentences, minutes} } — archived past days, today excluded
     speaking: "shadow_speaking",      // [{id,articleId,articleTitle,type,prompt,answer,createdAt,wordCount}]
-    streak: "shadow_streak",         // { lastActiveDate, count }
+    streak: "shadow_streak",         // { lastActiveDate, count, freezeTokens, longestStreak, milestonesAwarded } — freezeTokens/longestStreak/milestonesAwarded added v0.14.18, missing on older records, always read with a safe fallback (see bumpStreak)
     dailyGoal: "shadow_daily_goal",  // number of articles/day, default 2
     turkish: "shadow_turkish",       // "1"/"0"
     reminder: "shadow_reminder",     // "1"/"0" — see MainActivity's AndroidReminder bridge
@@ -367,13 +372,46 @@
     Object.keys(hist).forEach(function (d) { total += hist[d].minutes || 0; });
     return total;
   }
+  // Streak rewards/freeze (2026-08-18 Home redesign request): a "freeze"
+  // token bridges exactly one missed day without resetting the streak to
+  // 1 — same shape as Duolingo's streak freeze, the single most-cited
+  // retention mechanic in language-app gamification research. Tokens are
+  // earned automatically at streak milestones (7/30/100 days), capped at
+  // MAX_FREEZE_TOKENS so they stay a scarce reward rather than making
+  // misses free forever. longestStreak is tracked purely for display
+  // (Progress screen "best streak" stat) — never resets.
+  var STREAK_MILESTONES = [7, 30, 100];
+  var MAX_FREEZE_TOKENS = 2;
   function bumpStreak() {
-    var s = Store.get(K.streak, { lastActiveDate: null, count: 0 });
+    var s = Store.get(K.streak, { lastActiveDate: null, count: 0, freezeTokens: 0, longestStreak: 0, milestonesAwarded: [] });
+    // Migration safety — older records won't have these fields yet.
+    if (typeof s.freezeTokens !== "number") s.freezeTokens = 0;
+    if (typeof s.longestStreak !== "number") s.longestStreak = s.count || 0;
+    if (!Array.isArray(s.milestonesAwarded)) s.milestonesAwarded = [];
     var today = todayStr();
     if (s.lastActiveDate === today) return s; // already counted today
     var yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-    s.count = (s.lastActiveDate === yesterday) ? s.count + 1 : 1;
+    var twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
+    if (s.lastActiveDate === yesterday) {
+      s.count += 1;
+    } else if (s.lastActiveDate === twoDaysAgo && s.freezeTokens > 0) {
+      // Exactly one day was missed and a freeze is available — spend it to
+      // bridge the gap instead of resetting. A gap of 2+ missed days still
+      // resets regardless of freezes, same as Duolingo (a freeze covers
+      // one day, not an open-ended pause).
+      s.freezeTokens -= 1;
+      s.count += 1;
+    } else {
+      s.count = 1;
+    }
     s.lastActiveDate = today;
+    if (s.count > s.longestStreak) s.longestStreak = s.count;
+    STREAK_MILESTONES.forEach(function (milestone) {
+      if (s.count >= milestone && s.milestonesAwarded.indexOf(milestone) === -1) {
+        s.milestonesAwarded.push(milestone);
+        s.freezeTokens = Math.min(MAX_FREEZE_TOKENS, s.freezeTokens + 1);
+      }
+    });
     Store.set(K.streak, s);
     return s;
   }
@@ -483,7 +521,12 @@
       // which is always an original hand-authored template. Empty when the
       // word wasn't tapped from an open article (e.g. no context available).
       contextSentence: entry.contextSentence || "",
-      savedAt: Date.now(), known: false, reviewDate: todayStr(), interval: 1
+      // easeFactor/repetitions (2026-08-18 real-SRS rewrite, see reviewWord
+      // below): standard SM-2-style bookkeeping, adapted for a 3-button
+      // hard/good/easy grade instead of SM-2's 0-5 quality scale (the same
+      // adaptation Anki-style apps make).
+      savedAt: Date.now(), known: false, reviewDate: todayStr(),
+      interval: 1, easeFactor: 2.5, repetitions: 0
     };
     Store.set(K.vocab, map);
     return map[key];
@@ -507,14 +550,44 @@
     map[key].known = known;
     Store.set(K.vocab, map);
   }
+  // Real SM-2-style spaced repetition (rewritten 2026-08-18 — the previous
+  // version just mapped each grade to a FIXED interval every time
+  // (hard=1/good=3/easy=7 days, always, no matter how many times a word
+  // had already been reviewed correctly), so a word never got easier to
+  // schedule the better the learner knew it — the entire point of spaced
+  // repetition. This is the standard SM-2 update, adapted for a 3-button
+  // hard/good/easy grade instead of SM-2's 0-5 quality scale (same
+  // adaptation Anki-style apps make): easeFactor (min 1.3) scales how much
+  // the interval grows on each success, repetitions tracks the current
+  // streak of successful reviews (reset on "hard"), and the interval
+  // itself grows roughly geometrically once past the first two reviews —
+  // exactly what "gets easier/less frequent the better you know it" means.
   function reviewWord(word, grade) { // grade: 'hard' | 'good' | 'easy'
     var map = getVocabMap();
     var key = word.toLowerCase();
     var entry = map[key];
     if (!entry) return;
-    var days = grade === "hard" ? 1 : grade === "good" ? 3 : 7;
-    entry.interval = days;
-    entry.reviewDate = new Date(Date.now() + days * 86400000).toISOString().slice(0, 10);
+    var ease = typeof entry.easeFactor === "number" ? entry.easeFactor : 2.5;
+    var reps = typeof entry.repetitions === "number" ? entry.repetitions : 0;
+    var interval = typeof entry.interval === "number" && entry.interval > 0 ? entry.interval : 1;
+    var MAX_INTERVAL_DAYS = 180;
+    if (grade === "hard") {
+      reps = 0;
+      interval = 1;
+      ease = Math.max(1.3, ease - 0.15);
+    } else if (grade === "good") {
+      reps += 1;
+      interval = reps === 1 ? 1 : reps === 2 ? 3 : Math.round(interval * ease);
+    } else { // "easy"
+      reps += 1;
+      interval = reps === 1 ? 4 : Math.round(interval * ease * 1.3);
+      ease = Math.min(3.0, ease + 0.15);
+    }
+    interval = Math.min(MAX_INTERVAL_DAYS, Math.max(1, interval));
+    entry.easeFactor = ease;
+    entry.repetitions = reps;
+    entry.interval = interval;
+    entry.reviewDate = new Date(Date.now() + interval * 86400000).toISOString().slice(0, 10);
     Store.set(K.vocab, map);
     Store.set(K.wordsReviewed, (Store.get(K.wordsReviewed, 0) || 0) + 1); // Progress §11
   }
@@ -1663,7 +1736,7 @@
     emptyEl.hidden = true;
     cards.forEach(function (c) {
       var card = document.createElement("div");
-      card.className = "today-science-card";
+      card.className = "today-science-card" + (c.isContinuing ? " continuing" : "");
       card.innerHTML = todayScienceCardHtml(c.article, c.isContinuing);
       card.addEventListener("click", function (e) {
         if (e.target.closest(".ts-save")) return;
@@ -1682,11 +1755,75 @@
     });
   }
 
+  // Streak/goal card (Home redesign, 2026-08-18) — reuses the exact same
+  // K.streak/K.daily/K.dailyGoal data the old Progress-screen-only streak
+  // stat already read; this just also surfaces it at the top of Home so
+  // it's visible without a navigation.
+  function renderStreakCard() {
+    var daysEl = document.getElementById("streak-card-days");
+    var goalEl = document.getElementById("streak-card-goal");
+    if (!daysEl || !goalEl) return;
+    var streak = Store.get(K.streak, { count: 0, freezeTokens: 0 });
+    daysEl.textContent = streak.count || 0;
+    var goal = Store.get(K.dailyGoal, 2);
+    var done = getDaily().articles.length;
+    goalEl.textContent = done + "/" + goal;
+    var freezeEl = document.getElementById("streak-card-freeze");
+    var freezeCountEl = document.getElementById("streak-card-freeze-count");
+    if (freezeEl && freezeCountEl) {
+      var tokens = streak.freezeTokens || 0;
+      freezeEl.hidden = tokens <= 0;
+      freezeCountEl.textContent = tokens;
+    }
+  }
+
   function renderHomeSections() {
     document.getElementById("greeting-text").innerHTML = greetingText();
     renderTodayScience();
     renderNotifications();
+    renderStreakCard();
   }
+
+  // ════════════════════════════════════════════════════════════════════════
+  // Bottom nav (Home redesign, 2026-08-18) — shown only on the 5 main
+  // screens (home/browse-science/custom-articles/vocab/progress), hidden
+  // everywhere else (reading, onboarding, login, settings, detail, …).
+  // Rather than touching every one of the many existing screen-switch call
+  // sites scattered across this file, a single MutationObserver watches
+  // every .screen's class attribute and reacts whenever one becomes
+  // active — this is the only place that needs to know the full set of
+  // "main" screens, so it stays correct even as screens are added later.
+  // ════════════════════════════════════════════════════════════════════════
+  var BOTTOM_NAV_SCREENS = {
+    "screen-home": "btn-nav-home",
+    "screen-browse-science": "btn-home-browse",
+    "screen-custom-articles": "btn-home-custom",
+    "screen-vocab": "btn-vocab",
+    "screen-progress": "btn-progress"
+  };
+  function updateBottomNav() {
+    var nav = document.getElementById("bottom-nav");
+    if (!nav) return;
+    var active = document.querySelector(".screen.active");
+    var activeId = active ? active.id : "";
+    var navBtnId = BOTTOM_NAV_SCREENS[activeId];
+    nav.hidden = !navBtnId;
+    document.body.classList.toggle("has-bottom-nav", !!navBtnId);
+    nav.querySelectorAll(".bottom-nav-item").forEach(function (btn) {
+      btn.classList.toggle("nav-active", btn.id === navBtnId);
+    });
+  }
+  document.getElementById("btn-nav-home").addEventListener("click", function () {
+    goHome();
+  });
+  // Observe each .screen individually (not the whole body with subtree:true)
+  // so this only fires on real screen-level navigation, not every unrelated
+  // class toggle elsewhere on the page (save stars, filter chips, switches).
+  var bottomNavObserver = new MutationObserver(updateBottomNav);
+  document.querySelectorAll(".screen").forEach(function (el) {
+    bottomNavObserver.observe(el, { attributes: true, attributeFilter: ["class"] });
+  });
+  updateBottomNav();
 
   // ════════════════════════════════════════════════════════════════════════
   // Detail screen state + build-up rendering
@@ -1889,10 +2026,49 @@
   // default. Same pedagogical variety within an article, no comparison
   // across articles. The blanked word is always exactly the keyword that
   // was substituted into that drill, never a random guess.
+  // Word-highlighting while shadowing (2026-08-18 feature request) —
+  // wraps a sentence into per-word spans carrying that word's exact char
+  // offset in the original text, then highlights whichever span the
+  // native TTS engine reports as currently being spoken. Uses Android
+  // TextToSpeech's onRangeStart(utteranceId, start, end) callback (added
+  // API 26 — matches minSdk, see MainActivity.kt's TtsBridge), which
+  // fires per WORD during synthesis, unlike onStart/onDone which only
+  // fire once per queued utterance. Only wired up for shadowing's level-0
+  // "guided" card (and the revealed level-2 "blind" card): those are the
+  // only cases where the VISIBLE text is character-for-character identical
+  // to what's actually being spoken — level 1's blanked-out keyword would
+  // make the displayed text's char offsets disagree with the real spoken
+  // text's offsets, which the range events are indexed into.
+  function wrapWordsForHighlight(text) {
+    var html = "";
+    var re = /\S+/g, m;
+    while ((m = re.exec(text))) {
+      html += (html ? " " : "") +
+        '<span class="shadow-word" data-start="' + m.index + '">' + escapeHtml(m[0]) + "</span>";
+    }
+    return html;
+  }
+  var activeShadowHighlightEl = null;
+  function clearShadowHighlight() {
+    if (!activeShadowHighlightEl) return;
+    var prev = activeShadowHighlightEl.querySelector(".shadow-word.speaking");
+    if (prev) prev.classList.remove("speaking");
+  }
+  window.onNativeTtsRange = function (uttId, start, end) {
+    if (!activeShadowHighlightEl) return;
+    var prev = activeShadowHighlightEl.querySelector(".shadow-word.speaking");
+    if (prev) prev.classList.remove("speaking");
+    var words = activeShadowHighlightEl.querySelectorAll(".shadow-word");
+    for (var i = 0; i < words.length; i++) {
+      if (parseInt(words[i].dataset.start, 10) === start) { words[i].classList.add("speaking"); break; }
+    }
+  };
+
   var shadowState = { idx: 0 };
   function startShadowingMode() {
     shadowState.idx = 0;
     document.getElementById("shadowing-overlay").hidden = false;
+    resetRecordRow();
     renderShadowingCard();
   }
   function renderShadowingCard() {
@@ -1912,7 +2088,7 @@
 
     if (i === 0) {
       levelLabel.textContent = t("shadowing.level.guided");
-      sentenceEl.textContent = fullText;
+      sentenceEl.innerHTML = wrapWordsForHighlight(fullText);
     } else if (i === 1) {
       levelLabel.textContent = t("shadowing.level.partial");
       var re = new RegExp("\\b" + keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "i");
@@ -1926,6 +2102,12 @@
     }
   }
   document.getElementById("btn-shadowing-listen").addEventListener("click", function () {
+    var sentenceEl = document.getElementById("shadowing-sentence");
+    // Word-highlighting only makes sense when the visible text is exactly
+    // what's being spoken (level 0, or level 2 once revealed) — see the
+    // wrapWordsForHighlight comment above for why level 1 is excluded.
+    var canHighlight = !sentenceEl.hidden && sentenceEl.querySelector(".shadow-word");
+    activeShadowHighlightEl = canHighlight ? sentenceEl : null;
     speakQueue([state.drills[shadowState.idx].join(" ")]);
   });
   document.getElementById("btn-shadowing-show").addEventListener("click", function (e) {
@@ -1936,13 +2118,14 @@
       sentenceEl.hidden = true;
       e.target.textContent = t("shadowing.showSentence");
     } else {
-      sentenceEl.textContent = e.target.dataset.text || state.drills[shadowState.idx].join(" ");
+      sentenceEl.innerHTML = wrapWordsForHighlight(e.target.dataset.text || state.drills[shadowState.idx].join(" "));
       sentenceEl.hidden = false;
       e.target.textContent = t("shadowing.hideSentence");
     }
   });
   document.getElementById("btn-shadowing-next").addEventListener("click", function () {
     shadowState.idx += 1;
+    resetRecordRow();
     if (shadowState.idx >= 3) {
       saveProgress(state.article, { shadowingCompleted: true });
       document.getElementById("shadowing-overlay").hidden = true;
@@ -1952,6 +2135,76 @@
     }
     renderShadowingCard();
   });
+
+  // ── Record + compare (2026-08-18 feature request) ──────────────────────
+  // Lets the learner record their own attempt at the sentence and play it
+  // straight back, right next to the original TTS "Listen" button, so they
+  // can compare their pronunciation/rhythm against the original — no
+  // scoring, no upload, purely local playback, same "manual, no judged
+  // grading" philosophy as the rest of Shadowing/Recall. Fails soft to
+  // completely hidden (see the `hidden` attribute in index.html) when
+  // window.AndroidRecorder isn't present.
+  var hasNativeRecorder = !!(window.AndroidRecorder && window.AndroidRecorder.start);
+  var recordState = "idle"; // idle | recording | recorded | playing
+  var btnRecord = document.getElementById("btn-shadowing-record");
+  var btnPlayMine = document.getElementById("btn-shadowing-play-mine");
+  if (hasNativeRecorder) {
+    document.getElementById("shadowing-record-row").hidden = false;
+  }
+  function resetRecordRow() {
+    recordState = "idle";
+    if (!btnRecord) return;
+    btnRecord.classList.remove("recording");
+    btnRecord.textContent = window.I18N.t("shadowing.record");
+    btnPlayMine.hidden = true;
+  }
+  btnRecord.addEventListener("click", function () {
+    var t = window.I18N.t;
+    if (recordState === "recording") {
+      window.AndroidRecorder.stop();
+      return;
+    }
+    if (isSpeaking()) stopSpeaking();
+    recordState = "recording";
+    btnRecord.classList.add("recording");
+    btnRecord.textContent = t("shadowing.recording");
+    btnPlayMine.hidden = true;
+    window.AndroidRecorder.start();
+  });
+  btnPlayMine.addEventListener("click", function () {
+    var t = window.I18N.t;
+    if (recordState === "playing") {
+      window.AndroidRecorder.stopPlayback();
+      return;
+    }
+    recordState = "playing";
+    btnPlayMine.textContent = t("shadowing.playingMine");
+    window.AndroidRecorder.play();
+  });
+  // Bridge callbacks — MainActivity.kt's RecorderBridge calls these after
+  // every state change, success or failure, so the UI never gets stuck
+  // mid-recording/mid-playback with no way forward (same "always a real
+  // result" rule as the content-update bridge).
+  window.onRecordingStarted = function () {
+    recordState = "recording";
+  };
+  window.onRecordingStopped = function () {
+    var t = window.I18N.t;
+    recordState = "recorded";
+    btnRecord.classList.remove("recording");
+    btnRecord.textContent = t("shadowing.recordAgain");
+    btnPlayMine.hidden = false;
+    btnPlayMine.textContent = t("shadowing.playMine");
+  };
+  window.onPlaybackDone = function () {
+    var t = window.I18N.t;
+    recordState = "recorded";
+    btnPlayMine.textContent = t("shadowing.playMine");
+  };
+  window.onRecordingError = function (message) {
+    resetRecordRow();
+    alert(window.I18N.t("shadowing.recordError"));
+  };
 
   // ── Delayed Recall ───────────────────────────────────────────────────────
   // "Can you remember?" — listen once, try to say it from memory, then
@@ -2454,6 +2707,8 @@
     setArticleListenState(false);
     window._shadowOnUttStart = null;
     clearArticleHighlight();
+    clearShadowHighlight();
+    activeShadowHighlightEl = null;
     if (window._shadowTtsDone) { window._shadowTtsDone(); window._shadowTtsDone = null; }
   };
 
@@ -3079,7 +3334,8 @@
       progressStatBlock(articlesCompleted, t("progress.articlesCompleted")) +
       progressStatBlock(wordsSaved, t("progress.wordsSaved")) +
       progressStatBlock((hours ? hours + "h " : "") + mins + "m", t("progress.minutes")) +
-      progressStatBlock(streak.count, t("progress.streak"));
+      progressStatBlock(streak.count, t("progress.streak")) +
+      progressStatBlock(streak.longestStreak || streak.count || 0, t("progress.longestStreak"));
 
     // Activity counts, not skill scores — see V2 spec §33: no fabricated
     // "Speaking: 84%" style numbers, only how many times each activity type
@@ -3310,8 +3566,17 @@
   });
 
   // ---- Browse Science / Saved Articles (v0.13 — moved off Home, §2) ----
+  // Real bug found 2026-08-18 while moving this button into the bottom nav
+  // (reachable from vocab/progress/custom-articles too, not just Home
+  // anymore): switchScreen("screen-home", ...) only ever removed .active
+  // from screen-home specifically — fine when this button only lived on
+  // Home, but from any OTHER screen it left that screen's .active class in
+  // place while also activating Browse Science, so both rendered stacked
+  // on top of each other. Matches the "remove active from every .screen"
+  // pattern btn-home-custom/btn-vocab/btn-progress already used.
   document.getElementById("btn-home-browse").addEventListener("click", function () {
-    switchScreen("screen-home", "screen-browse-science");
+    document.querySelectorAll(".screen").forEach(function (s) { s.classList.remove("active"); });
+    document.getElementById("screen-browse-science").classList.add("active");
   });
   document.getElementById("btn-home-saved").addEventListener("click", function () {
     activeStatus = "saved";

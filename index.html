@@ -119,7 +119,7 @@
   .streak-badge { font-size: 12px; font-family: var(--font-heading); font-weight: 800; }
   .mini-list .article-row { padding-left: 0; padding-right: 0; }
   .filter-row { display: flex; gap: 8px; padding: 0 0 12px; overflow-x: auto; align-items: center; }
-  .filter-row .tag { border-radius: 0; cursor: pointer; white-space: nowrap; border: 1px solid transparent; }
+  .filter-row .tag { border-radius: var(--radius-sm); cursor: pointer; white-space: nowrap; border: 1px solid transparent; }
   .filter-row .tag-outline { border: 1px solid var(--color-accent); }
   .refresh-btn { margin-left: auto; font-size: 11px; color: var(--color-accent); cursor: pointer; white-space: nowrap; flex: none; }
   .external-reading-entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--color-accent); color: var(--color-bg); padding: 16px 18px; cursor: pointer; }
@@ -150,8 +150,75 @@
   }
   .secondary-action span { font-size: 10.5px; text-align: center; line-height: 1.25; opacity: 0.8; }
   .secondary-action:active { background: var(--color-neutral-300); }
+
+  /* ---- Streak/goal card + quick links + bottom nav (Home redesign,
+     2026-08-18: "biraz daha modern bir arayüz" — the previous Home put a
+     6-item button row directly under the greeting, competing with the
+     article cards for attention. This moves the app's 4 main sections
+     (Home/Browse/Bizden Gelenler/Vocab/Progress) into a fixed bottom nav
+     the thumb can always reach, frees the top of Home for a single
+     streak/goal summary, and keeps the two overflow destinations (Saved
+     Articles, External Reading) as small quick-link pills instead of
+     full-width buttons — nothing lost, just deprioritized visually to
+     match how often each is actually used.) ---- */
+  .streak-card {
+    display: flex; background: var(--color-text); color: var(--color-bg);
+    border-radius: var(--radius-lg); padding: 16px 18px; margin: 0 20px 12px;
+  }
+  .streak-card-stat { flex: 1; }
+  .streak-card-stat + .streak-card-stat { text-align: right; }
+  .streak-card-label { display: block; font-size: 12px; opacity: 0.65; margin-bottom: 2px; }
+  .streak-card-value {
+    display: flex; align-items: center; gap: 6px; font-family: var(--font-heading);
+    font-weight: 800; font-size: 21px;
+  }
+  .streak-card-stat + .streak-card-stat .streak-card-value { justify-content: flex-end; }
+  .streak-card-value svg { color: var(--color-accent-400); flex: none; }
+  .streak-card-freeze {
+    display: inline-flex; align-items: center; gap: 3px; margin-left: 8px;
+    font-size: 11px; opacity: 0.75; vertical-align: middle;
+  }
+  .streak-card-freeze:not([hidden]) { display: inline-flex; }
+
+  .quick-links-row { display: flex; gap: 8px; padding: 0 20px 4px; }
+  .quick-link {
+    display: flex; align-items: center; gap: 6px; flex: none;
+    padding: 7px 12px; background: none; border: 1px solid var(--color-divider);
+    border-radius: var(--radius-md); color: var(--color-text); font: inherit;
+    font-size: 12px; opacity: 0.8; cursor: pointer;
+  }
+  .quick-link:active { background: var(--color-surface); }
+
+  /* The "continuing" card (first Today's Science slot when an article is
+     mid-flow) — same data/markup as any other card (todayScienceCardHtml),
+     just visually promoted so it reads as "pick up where you left off"
+     instead of blending into the recommended list below it. */
+  .today-science-card.continuing {
+    background: var(--color-accent-100); border-color: var(--color-accent-300);
+  }
+  :root[data-theme="dark"] .today-science-card.continuing {
+    background: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface));
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+  .today-science-card.continuing .ts-eyebrow { color: var(--color-accent-700); }
+  :root[data-theme="dark"] .today-science-card.continuing .ts-eyebrow { color: var(--color-accent-300); }
+
+  .bottom-nav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    display: flex; background: var(--color-bg); border-top: 1px solid var(--color-divider);
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+  }
+  .bottom-nav[hidden] { display: none; }
+  .bottom-nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    background: none; border: none; color: var(--color-text); opacity: 0.55;
+    font: inherit; font-size: 10px; line-height: 1.15; padding: 6px 2px; cursor: pointer;
+  }
+  .bottom-nav-item svg { flex: none; }
+  .bottom-nav-item.nav-active { opacity: 1; color: var(--color-accent); }
+  body.has-bottom-nav .screen { padding-bottom: 68px; }
   .er-filter-row { display: flex; gap: 8px; padding: 0 0 12px; overflow-x: auto; }
-  .er-filter-row .tag { border-radius: 0; cursor: pointer; white-space: nowrap; border: 1px solid var(--color-accent); }
+  .er-filter-row .tag { border-radius: var(--radius-sm); cursor: pointer; white-space: nowrap; border: 1px solid var(--color-accent); }
   .er-card { padding: 14px 0; border-bottom: 1px solid var(--color-divider); cursor: pointer; }
   .er-card-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
   .er-card-title { font-family: var(--font-heading); font-weight: 800; font-size: 14.5px; margin-bottom: 4px; }
@@ -170,7 +237,7 @@
   .article-row:active { background: color-mix(in srgb, var(--color-text) 5%, transparent); }
   .article-row .thumb { width: 72px; height: 72px; flex: none; overflow: hidden; }
   .article-row .meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-  .article-row .meta-row .tag { border-radius: 0; font-size: 10px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0; }
+  .article-row .meta-row .tag { border-radius: var(--radius-sm); font-size: 10px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0; }
   .article-row .read-time { font-size: 11px; opacity: 0.5; white-space: nowrap; flex-shrink: 0; }
   .save-star { margin-left: auto; font-size: 16px; color: var(--color-divider); cursor: pointer; line-height: 1; padding: 2px 4px; flex: none; }
   .save-star.on { color: var(--color-accent); }
@@ -179,7 +246,7 @@
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
   .done-check { color: var(--color-accent); }
-  .article-row .level-tag { border-radius: 0; font-size: 10px; white-space: nowrap; flex-shrink: 0; }
+  .article-row .level-tag { border-radius: var(--radius-sm); font-size: 10px; white-space: nowrap; flex-shrink: 0; }
   .article-row[hidden] { display: none; }
 
   /* ---- Settings ---- */
@@ -224,7 +291,7 @@
   .hero { width: 100%; height: 180px; overflow: hidden; }
   .detail-content { padding: 18px 20px 0; }
   .detail-meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-  .detail-meta-row .tag { border-radius: 0; font-size: 10px; }
+  .detail-meta-row .tag { border-radius: var(--radius-sm); font-size: 10px; }
   .source-link { display: inline-block; font-size: 12px; margin: -4px 0 20px; }
   .seek-row { align-items: center; gap: 8px; margin: -8px 0 18px; }
   .seek-row:not([hidden]) { display: flex; } /* v0.13 fix: see .btn note in modernist.css */
@@ -276,7 +343,7 @@
   .progress-track { height: 4px; background: var(--color-neutral-300); }
   .progress-fill { height: 100%; background: var(--color-accent); transition: width 0.2s ease; }
   .rate-chips-row { display: flex; gap: 6px; margin-bottom: 12px; }
-  .rate-chip { font-size: 11px; padding: 4px 10px; border-radius: 0; cursor: pointer; }
+  .rate-chip { font-size: 11px; padding: 4px 10px; border-radius: var(--radius-sm); cursor: pointer; }
   .controls-row { display: flex; gap: 10px; }
   .controls-row .btn { flex: 1; }
   .controls-row .btn.speaking { background: var(--color-accent-700); color: var(--color-bg); }
@@ -299,11 +366,15 @@
   .reading-mode-row .font-btns { display: inline-flex; border: 1px solid var(--color-divider); }
   .reading-mode-row .font-btns span { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: var(--font-heading); font-weight: 800; }
   .reading-mode-row .font-btns span:first-child { border-right: 1px solid var(--color-divider); }
-  .reading-width-opt { font-size: 11px; padding: 5px 10px; border-radius: 0; cursor: pointer; }
+  .reading-width-opt { font-size: 11px; padding: 5px 10px; border-radius: var(--radius-sm); cursor: pointer; }
 
   /* ---- TTS sentence highlighting ---- */
   .tts-sentence.speaking { background: color-mix(in srgb, var(--color-accent) 20%, transparent); }
   .tts-sentence { transition: background 0.15s; }
+  /* Word-highlighting during shadowing (2026-08-18) — see
+     wrapWordsForHighlight()/onNativeTtsRange in app.js. */
+  .shadow-word { transition: background 0.1s, color 0.1s; border-radius: var(--radius-sm); padding: 0 1px; }
+  .shadow-word.speaking { background: var(--color-accent); color: var(--color-bg); }
 
   /* ---- Offline banner ---- */
   .offline-banner { margin: 0 20px 16px; padding: 12px 14px; background: var(--color-surface); border-left: 3px solid var(--color-accent); font-size: 12.5px; }
@@ -328,6 +399,7 @@
   .stage-level-label { text-align: center; font-size: 10px; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 6px; }
   .stage-hint { text-align: center; font-size: 12.5px; opacity: 0.6; font-style: italic; margin: -14px 0 18px; }
   .shadowing-actions { display: flex; flex-direction: column; gap: 10px; }
+  #btn-shadowing-record.recording { background: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent); }
   .lesson-checklist { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 16px; }
   .checklist-item { font-size: 10.5px; opacity: 0.4; white-space: nowrap; }
   .checklist-item.done { opacity: 0.85; color: var(--color-accent); }
@@ -459,38 +531,43 @@
     <strong data-i18n="home.offline.title">You're offline.</strong> <span data-i18n="home.offline.body">Your saved lessons are still available.</span>
   </div>
 
-  <!-- Secondary actions — moved above Today's Science (user feedback,
-       2026-08-14): finding "something else to read" (Browse Science) was
-       buried below the article cards; putting it right under the greeting
-       means it never needs a scroll to reach, regardless of how many
-       Today's Science cards render below it. -->
-  <div class="home-section secondary-actions-section">
-    <div class="secondary-actions-row">
-      <button class="secondary-action" id="btn-home-browse">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <span data-i18n="home.secondary.browse">Browse Science</span>
-      </button>
-      <button class="secondary-action" id="btn-home-custom">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-        <span data-i18n="home.secondary.custom">From Us</span>
-      </button>
-      <button class="secondary-action" id="btn-home-saved">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-        <span data-i18n="home.secondary.saved">Saved Articles</span>
-      </button>
-      <button class="secondary-action" id="btn-vocab">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-        <span data-i18n="home.secondary.vocab">My Vocabulary</span>
-      </button>
-      <button class="secondary-action" id="btn-progress">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-        <span data-i18n="home.secondary.progress">Progress</span>
-      </button>
-      <button class="secondary-action" id="btn-open-external-reading">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-        <span data-i18n="home.secondary.external">External Reading</span>
-      </button>
+  <!-- Streak/goal card + quick links (2026-08-18 redesign): Browse Science,
+       Bizden Gelenler, My Vocabulary and Progress moved into the fixed
+       bottom nav (see the <nav class="bottom-nav"> after all .screen divs,
+       and their button elements below — same ids as before, just relocated,
+       so every existing click handler in app.js keeps working unchanged).
+       Saved Articles and External Reading are used less often, so they stay
+       here as small quick-link pills instead of full-width buttons. -->
+  <div class="streak-card" id="streak-card">
+    <div class="streak-card-stat">
+      <span class="streak-card-label" data-i18n="home.streak.label">Daily streak</span>
+      <span class="streak-card-value">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c1 3-2 4-2 7a3 3 0 0 0 6 0c1.5 1.5 2 3.5 2 5a6 6 0 1 1-12 0c0-4 3-6 3-8 0-1.5-.5-3-2-5.5C9 1 11 1 12 2z"></path></svg>
+        <span id="streak-card-days">0</span>
+      </span>
+      <!-- Streak freeze indicator (2026-08-18) — only shown when the
+           learner actually has a freeze token banked, earned at
+           streak milestones; see bumpStreak() in app.js. -->
+      <span class="streak-card-freeze" id="streak-card-freeze" hidden>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="17" y1="5" x2="7" y2="19"></line><line x1="7" y1="5" x2="17" y2="19"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+        <span id="streak-card-freeze-count">1</span>
+      </span>
     </div>
+    <div class="streak-card-stat">
+      <span class="streak-card-label" data-i18n="home.streak.today">Today</span>
+      <span class="streak-card-value"><span id="streak-card-goal">0/2</span></span>
+    </div>
+  </div>
+
+  <div class="quick-links-row">
+    <button class="quick-link" id="btn-home-saved">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+      <span data-i18n="home.secondary.saved">Saved Articles</span>
+    </button>
+    <button class="quick-link" id="btn-open-external-reading">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+      <span data-i18n="home.secondary.external">External Reading</span>
+    </button>
   </div>
 
   <!-- Today's Science — up to 3 cards: the in-progress lesson (if any)
@@ -929,6 +1006,39 @@
   </div>
 </div>
 
+<!-- ═══════════════ BOTTOM NAV (2026-08-18 Home redesign) ═══════════════
+     Sibling of every .screen div, not nested in one — its visibility and
+     active tab are driven entirely from JS (see updateBottomNav() in
+     app.js), which watches which .screen currently has .active and shows/
+     hides this bar + highlights the matching tab accordingly. Only shown
+     on the 5 main destinations; hidden on reading/onboarding/login/
+     settings/detail screens. btn-home-browse/btn-home-custom/btn-vocab/
+     btn-progress are the SAME ids the old secondary-actions-row used —
+     relocating them here (rather than duplicating with new ids) means
+     every existing click handler in app.js keeps working with zero changes. -->
+<nav class="bottom-nav" id="bottom-nav" hidden>
+  <button class="bottom-nav-item" id="btn-nav-home">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>
+    <span data-i18n="nav.home">Home</span>
+  </button>
+  <button class="bottom-nav-item" id="btn-home-browse">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <span data-i18n="nav.discover">Discover</span>
+  </button>
+  <button class="bottom-nav-item" id="btn-home-custom">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+    <span data-i18n="nav.customShort">From Us</span>
+  </button>
+  <button class="bottom-nav-item" id="btn-vocab">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+    <span data-i18n="nav.vocabShort">Vocab</span>
+  </button>
+  <button class="bottom-nav-item" id="btn-progress">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+    <span data-i18n="home.secondary.progress">Progress</span>
+  </button>
+</nav>
+
 <!-- ═══════════════ WORD DETAIL MODAL ═══════════════ -->
 <!-- ═══════════════ NOTIFICATIONS (new "Bizden Gelenler" pieces) ═══════════════ -->
 <div class="dialog-backdrop" id="notifications-overlay" hidden>
@@ -1014,6 +1124,14 @@
     <div class="shadowing-actions">
       <span class="btn btn-secondary btn-block" id="btn-shadowing-listen" data-i18n="shadowing.listen">🔊 Listen</span>
       <span class="btn btn-primary btn-block" id="btn-shadowing-next" data-i18n="shadowing.repeated">I repeated it →</span>
+    </div>
+    <!-- Record + compare (2026-08-18 feature request) — hidden entirely
+         when window.AndroidRecorder isn't present (desktop preview, or a
+         native build that predates this feature), same fail-soft pattern
+         as the rest of this file's native bridges. -->
+    <div class="shadowing-actions" id="shadowing-record-row" hidden style="margin-top:8px;">
+      <span class="btn btn-secondary btn-block" id="btn-shadowing-record" data-i18n="shadowing.record">🎙 Record yourself</span>
+      <span class="btn btn-secondary btn-block" id="btn-shadowing-play-mine" hidden data-i18n="shadowing.playMine">▶ Play my voice</span>
     </div>
   </div>
 </div>

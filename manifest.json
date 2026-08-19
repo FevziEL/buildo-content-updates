@@ -1,12 +1,12 @@
 {
-  "contentVersion": 16,
+  "contentVersion": 17,
   "minAppVersionCode": 20,
-  "notes": "v0.14.18: Home redesign (bottom nav, streak/goal card), real SM-2-style spaced repetition, streak rewards/freeze, +266 dictionary entries (2,650 -> 2,916). Shadowing word-highlighting and voice recording+comparison are native-only, shipped separately as versionCode 23.",
+  "notes": "v0.14.19: status bar theme sync call added to applyTheme() (content-safe part). The real status bar fix + signed release build are native-only, shipped separately as versionCode 24.",
   "files": [
     {
       "path": "app.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/b4328893f0febc1c6343305f397a797634dd1274/app.js",
-      "sha256": "274d12d4a2c58ca149b7a4e2bd881213a0ff4266b931c0f9a674c7b98c80f80e"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/98c57ffebf54c8c82be22dff5561f8205917166a/app.js",
+      "sha256": "cdfb39ab26e2d10609a377c13307b3b83cb23058771137b473b4727b103bb4ab"
     },
     {
       "path": "dict_en_tr.js",

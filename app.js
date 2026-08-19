@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.18";
+  var APP_VERSION = "0.14.19";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.19", notes: [
+        "Durum çubuğu (üstte saat/bildirim/pil ikonlarının olduğu şerit) artık uygulamanın kendi açık/koyu tema seçiminize gerçekten uyuyor — daha önce telefonun genel sistem temasını takip ediyordu, uygulama içindeki tema ile alakasız kalabiliyordu; bu yüzden açık modda ikonlar bazen görünmüyordu, koyu moda geçince de üst şerit koyulaşmıyordu. Ayrıca uygulama artık imzalı, küçültülmüş (R8) bir \"release\" derlemesiyle dağıtılıyor — geliştirme/hata ayıklama amaçlı \"debug\" derlemesi yerine, gerçek bir imza anahtarıyla imzalanmış, daha güvenli ve daha küçük boyutlu bir APK."
+      ]
+    },
     {
       version: "0.14.18", notes: [
         "Ana ekran ve arayüz yenilendi: alt gezinme çubuğu eklendi (Ana Sayfa/Keşfet/Bizden Gelenler/Kelime/İlerleme), Ana Sayfa'ya günlük seri ve hedef ilerlemesini gösteren bir kart eklendi, kartların köşeleri yumuşatıldı — genel olarak daha modern bir görünüm. Kelime tekrar sistemi gerçek bir aralıklı tekrar (SM-2 tarzı) algoritmasına geçti: artık her doğru bildiğinizde tekrar aralığı gerçekten büyüyor, sabit güne dönmüyor. Günlük seri artık ödüllendiriliyor: 7/30/100 günlük kilometre taşlarında bir \"dondurma\" hakkı kazanıyorsunuz, bu da bir günü kaçırsanız bile seriyi bozmadan köprülüyor. Shadowing modunda artık cümle okunurken o an söylenen kelime ekranda vurgulanıyor. Shadowing'e kendi sesinizi kaydedip orijinaliyle karşılaştırma imkânı eklendi (tamamen cihazda, hiçbir şey yüklenmiyor)."
@@ -3404,6 +3409,18 @@
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     document.querySelectorAll('#theme-switch input[value="' + theme + '"]').forEach(function (r) { r.checked = true; });
+    // Real bug found 2026-08-19: the Android status bar (clock/battery/
+    // notification icons) never knew about THIS in-app theme toggle at
+    // all — it only ever followed the PHONE's own system-wide dark-mode
+    // setting (Theme.AppCompat.DayNight), completely independent of
+    // shadow_theme/localStorage. That's why switching Buildo's own theme
+    // never visibly changed the status bar, and why the icons were
+    // unreadable in light mode (they default to light-colored icons,
+    // invisible against a light background) whenever the two disagreed.
+    // window.AndroidTheme (MainActivity.kt) sets the real status bar
+    // color + icon appearance to match, and persists it so the next cold
+    // start gets the right one immediately, before this JS even runs.
+    if (window.AndroidTheme && window.AndroidTheme.setDark) window.AndroidTheme.setDark(theme === "dark");
   }
   function applyFontScale(pct) {
     document.documentElement.style.setProperty("--font-scale", (pct / 100).toFixed(2));

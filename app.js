@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.21";
+  var APP_VERSION = "0.14.22";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.22", notes: [
+        "Bildirim zilindeki gerçek bir hata düzeltildi: zile dokunmak artık rozetteki sayıyı gerçekten temizliyor (daha önce sadece liste açılıyordu, sayı aynı kalıyordu). Ayrıca artık uygulamada yeni içerik geldiğinde (yeni bir yazı veya güncelleme) telefonunuza gerçek bir bildirim geliyor — sadece uygulama içindeki zile değil. Uygulama arka planda günde iki kez otomatik olarak yeni içerik kontrolü yapıyor, açık olmasa bile."
+      ]
+    },
     {
       version: "0.14.21", notes: [
         "\"Bizden Gelenler\"e dokuzuncu yazı eklendi: \"Microplastics in Agricultural Soils: A Growing Threat to Plant Nutrition\" (Part 9). Bu sürüm YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi."
@@ -312,7 +317,8 @@
     reminder: "shadow_reminder",     // "1"/"0" — see MainActivity's AndroidReminder bridge
     readingWidth: "shadow_reading_width", // "narrow" | "normal" | "wide"
     listeningSessions: "shadow_listening_sessions", // number — count of whole-article Listen plays (change list §11)
-    wordsReviewed: "shadow_words_reviewed"          // number — count of vocabulary review-card grades submitted
+    wordsReviewed: "shadow_words_reviewed",         // number — count of vocabulary review-card grades submitted
+    notifSeen: "shadow_notif_seen"                  // [ids] — custom-article ids whose notification badge has been cleared (see renderNotifications, real bug fix 2026-08-20: bell badge wasn't clearing on tap)
     // shadow_reading_level_<id> keys from the removed v0.04-v0.08 in-
     // article Easy/Standard/Advanced/Original selector may still linger in
     // old installs' localStorage — harmless, unread dead keys now that
@@ -1086,23 +1092,42 @@
   // ════════════════════════════════════════════════════════════════════════
   // Notifications bell (2026-08-18) — surfaces newly arrived "Bizden
   // Gelenler" pieces without the reader needing to remember to open that
-  // list themselves. "New" is deliberately not a separate tracked flag: a
-  // piece counts as new for as long as it has no K.progress entry, and
-  // opening it (openArticleObject -> saveProgress touches lastOpened even
-  // before any real progress is made) is what naturally clears it — the
-  // exact same "opened" signal every other read/unread indicator in the
-  // app already relies on (see the done-check mark in articleRowHtml).
+  // list themselves. The LIST is driven by K.progress (a piece stays
+  // listed for as long as it hasn't actually been opened — same "opened"
+  // signal every other read/unread indicator in the app already relies
+  // on). The BADGE COUNT is a separate, smaller thing: K.notifSeen (real
+  // bug fix 2026-08-20 — "zil simgesi tıklanınca sayı gitmiyor": tapping
+  // the bell used to do nothing to the badge, since it only re-ran the
+  // same K.progress-based count, which never changes just from viewing
+  // the list — only from actually opening an article). Now tapping the
+  // bell marks every currently-new id "seen" and the badge counts only
+  // unseen-new items, while the list itself keeps showing every not-yet-
+  // opened piece regardless of seen state, so nothing is lost from view —
+  // this matches how a normal notification bell behaves (badge clears on
+  // open, items remain until acted on).
   // ════════════════════════════════════════════════════════════════════════
   function getNewCustomArticles() {
     var progressMap = Store.get(K.progress, {});
     return CUSTOM_ARTICLES.filter(function (a) { return !progressMap[a.id]; });
   }
+  function getUnseenCustomArticles() {
+    var seen = Store.get(K.notifSeen, []);
+    return getNewCustomArticles().filter(function (a) { return seen.indexOf(a.id) === -1; });
+  }
+  function markAllCustomArticlesSeen() {
+    var seen = Store.get(K.notifSeen, []);
+    getNewCustomArticles().forEach(function (a) {
+      if (seen.indexOf(a.id) === -1) seen.push(a.id);
+    });
+    Store.set(K.notifSeen, seen);
+  }
   function renderNotifications() {
     var items = getNewCustomArticles();
+    var unseenCount = getUnseenCustomArticles().length;
     var badge = document.getElementById("notif-badge");
     if (badge) {
-      badge.hidden = items.length === 0;
-      badge.textContent = items.length > 9 ? "9+" : String(items.length);
+      badge.hidden = unseenCount === 0;
+      badge.textContent = unseenCount > 9 ? "9+" : String(unseenCount);
     }
     var listEl = document.getElementById("notifications-list");
     var emptyEl = document.getElementById("notifications-empty");
@@ -1126,6 +1151,7 @@
     });
   }
   document.getElementById("btn-notifications").addEventListener("click", function () {
+    markAllCustomArticlesSeen();
     renderNotifications();
     document.getElementById("notifications-overlay").hidden = false;
   });

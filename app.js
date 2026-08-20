@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.22";
+  var APP_VERSION = "0.14.23";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.23", notes: [
+        "Bildirim izni artık uygulama ilk açıldığında doğrudan soruluyor (daha önce sadece hatırlatıcıyı açarsanız sorulurdu) — böylece yeni içerik bildirimleri baştan çalışabiliyor. Telefon bildirimleri artık son güncellemenin sürüm numarasını ve kısaca neler eklendiğini gösteriyor."
+      ]
+    },
     {
       version: "0.14.22", notes: [
         "Bildirim zilindeki gerçek bir hata düzeltildi: zile dokunmak artık rozetteki sayıyı gerçekten temizliyor (daha önce sadece liste açılıyordu, sayı aynı kalıyordu). Ayrıca artık uygulamada yeni içerik geldiğinde (yeni bir yazı veya güncelleme) telefonunuza gerçek bir bildirim geliyor — sadece uygulama içindeki zile değil. Uygulama arka planda günde iki kez otomatik olarak yeni içerik kontrolü yapıyor, açık olmasa bile."

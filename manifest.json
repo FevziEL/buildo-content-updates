@@ -1,12 +1,12 @@
 {
-  "contentVersion": 20,
+  "contentVersion": 21,
   "minAppVersionCode": 20,
-  "notes": "v0.14.21: Bizden Gelenler Part 9 (\"Microplastics in Agricultural Soils: A Growing Threat to Plant Nutrition\").",
+  "notes": "v0.14.22: notification bell badge-clear fix (content-update-safe part). The real system notification + twice-daily background check are native-only, shipped separately as versionCode 26.",
   "files": [
     {
       "path": "app.js",
-      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/5b7d5a9e281c37e7c6de0ce6f2ef9266c16eada4/app.js",
-      "sha256": "a37207104e2d0aa4612e5029b50f5e2e845a48fa2366ee8d4315799bec1c2e00"
+      "url": "https://raw.githubusercontent.com/FevziEL/buildo-content-updates/24fb2c002381b16a0fa8d7d36158582155a2306c/app.js",
+      "sha256": "1a3335a27020a83b5ea9d7876edf200e0dea9261d8b7076d3aab2ed68e5dde09"
     },
     {
       "path": "dict_en_tr.js",

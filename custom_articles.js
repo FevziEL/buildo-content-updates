@@ -210,6 +210,26 @@
         "The future of this field may therefore require a new experimental philosophy: instead of asking only whether microplastics can enter a healthy plant, researchers may need to ask how stress, ageing, injury, and environmental history together determine the fate of plastic particles inside crops.",
         "That is a much more realistic—and considerably more complicated—picture of plastic pollution in agriculture."
       ]
+    },
+    {
+      id: "custom_microplastics_and_plants_part9",
+      topic: "cevre",
+      source: "Bizden Gelenler",
+      title: "Microplastics in Agricultural Soils: A Growing Threat to Plant Nutrition",
+      link: "",
+      pubDate: "2026-08-20T00:00:00Z",
+      image: "",
+      bodyParagraphs: [
+        "Part 9 — More Than a Physical Contaminant",
+        "Microplastic pollution is increasingly recognised as an important environmental problem in agricultural ecosystems. Although much of the earlier research focused on the physical accumulation of plastic particles in soil, recent studies have demonstrated that their effects may extend to plant nutrition, root development, and metabolic regulation. Therefore, microplastics should not be considered merely as inert particles present in the soil.",
+        "Agricultural soils may contain microplastics originating from plastic mulching materials, irrigation systems, sewage sludge, compost, atmospheric deposition, and the degradation of larger plastic products. Once these particles enter the soil, they can interact with minerals, organic matter, microorganisms, and nutrients. As a result, the chemical environment surrounding plant roots may be substantially modified.",
+        "One of the most important consequences may concern nutrient availability. Plant roots require a balanced supply of elements such as nitrogen, phosphorus, potassium, calcium, magnesium, and iron for normal growth and development. However, microplastics can alter soil structure and water movement and may also influence the sorption and mobility of nutrients. Consequently, plants growing in microplastic-contaminated soils may experience nutritional conditions that differ from those observed in uncontaminated soils.",
+        "The response of the plant is not necessarily limited to nutrient uptake. Changes in mineral nutrition can subsequently affect photosynthesis, antioxidant metabolism, and biomass production. For instance, insufficient phosphorus or potassium may impair energy metabolism and stomatal regulation, whereas disturbances in iron availability can directly influence chlorophyll synthesis and photosynthetic electron transport.",
+        "Another important consideration is the interaction between microplastics and soil microorganisms. Rhizosphere microorganisms play a fundamental role in nutrient mineralisation and plant growth promotion. If microplastics modify the composition or activity of these microbial communities, nutrient cycling may also be affected indirectly. Thus, the effects of plastic contamination may propagate through the soil–plant system rather than remaining localised to the particles themselves.",
+        "This emerging perspective suggests that the ecological consequences of microplastics cannot be evaluated solely by measuring their concentration in soil or plant tissues. Greater attention should be given to physiological and biochemical indicators that reveal how plants respond to altered nutrient conditions.",
+        "The central concern is therefore becoming increasingly clear: microplastics may influence plant health not only by entering plant tissues, but also by changing the environment in which roots acquire the resources required for life.",
+        "As agricultural plastic contamination continues to increase, understanding this interaction will be essential for determining whether microplastics represent a temporary environmental stress or a persistent threat to long-term soil fertility and crop productivity."
+      ]
     }
   ];
 

@@ -6,7 +6,7 @@
   // with CHANGELOG below, in Settings → Hakkında. Add a new entry here
   // (newest first) every time APP_VERSION changes — this is the single
   // source both the badge and the About screen's changelog read from.
-  var APP_VERSION = "0.14.20";
+  var APP_VERSION = "0.14.21";
   // Local data-format version — bumped whenever the *shape* of what's
   // stored in localStorage changes in a way a future migration might need
   // to know about (change list §18). Reads are always safe-fallback
@@ -14,6 +14,11 @@
   // looking only — nothing here performs a destructive migration.
   var DATA_SCHEMA_VERSION = 1;
   var CHANGELOG = [
+    {
+      version: "0.14.21", notes: [
+        "\"Bizden Gelenler\"e dokuzuncu yazı eklendi: \"Microplastics in Agricultural Soils: A Growing Threat to Plant Nutrition\" (Part 9). Bu sürüm YENİ BİR APK OLMADAN, doğrudan İçerik Güncellemeleri üzerinden geldi."
+      ]
+    },
     {
       version: "0.14.20", notes: [
         "Arayüz baştan aşağı yenilendi — \"Editoryal / Okuma öncelikli\" tasarım: sıcak kağıt tonu zemin, kırmızının yerine daha sakin bir kiremit/toprak rengi vurgu, başlıklarda ve gerçek makale metninde serif (kitap/dergi hissi veren) bir yazı tipi, arayüz butonlarında ise okunaklı bir sans yazı tipi. Bugünkü Bilim kartları artık çizgiyle ayrılmış sade bir liste (her kartın kendi kutusu yerine), her kartın üst etiketi artık gerçek konuyu gösteriyor (\"Uzay\", \"Çevre\" gibi). Seri kartı daha sakin, ince bir şeride dönüştürüldü. Koyu tema de aynı sıcak tonlarla yeniden ayarlandı. Sözlüğe ayrıca 214 kelime daha eklendi (2.916 → 3.130)."
